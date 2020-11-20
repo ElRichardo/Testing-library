@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shelf">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/main_activity_image_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="36dp"
+            android:backgroundTint="@color/black"
+            android:onClick="onClick"
+            android:text="Image rotation(ei toimi kunnol)"
+            />
+
+        <Button
+            android:id="@+id/main_activity_sound_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/black"
+            android:onClick="onClick"
+            android:text="Sound testing (Ei toimi jostain syystä)"
+            />
+
+        <Button
+            android:id="@+id/main_activity_card_view_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="36dp"
+            android:backgroundTint="@color/black"
+            android:onClick="onClick"
+            android:text="Cardview test 1"
+            />
+
+        <Button
+            android:id="@+id/main_activity_view_pager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/black"
+            android:onClick="onClick"
+            android:text="ViewPager2 test"
+            />
+
+        <Button
+            android:id="@+id/main_activity_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="34dp"
+            android:backgroundTint="@color/black"
+            android:onClick="onClick"
+            android:text="Send notification"
+            />
+
+        <Button
+            android:id="@+id/main_activity_adjust_screen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/black"
+            android:onClick="onClick"
+            android:text="Simple adjust test"
+            />
+
+        <Button
+            android:id="@+id/main_activity_recipe_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="34dp"
+            android:backgroundTint="@color/black"
+            android:onClick="onClick"
+            android:text="Recipe saving app"
+            />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TestingApp</string>
+    <string name="title">Sakuragi Hanamichi The Genius</string>
+    <string name="description">His skills are unmatched and his vertical jump is unfathomable. He truly is a genius.</string>
+    <string name="description2">Effects: gives your basketball team a 100% win rate.</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>
