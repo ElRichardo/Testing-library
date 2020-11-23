@@ -8,8 +8,6 @@ public class ReceiptData extends RealmObject {
 
     private String title;
     private String date;
-    private File directory;
-
 
     public String getTitle() {
         return title;
@@ -25,14 +23,5 @@ public class ReceiptData extends RealmObject {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-
-    public File getDirectory() {
-        return directory;
-    }
-
-    public void setDirectory(File directory) {
-        this.directory = directory;
     }
 }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,8 @@ import com.choicely.learn.testingapp.receiptsave.ReceiptSavingActivity;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import io.realm.Realm;
 
@@ -33,13 +36,7 @@ public class CameraActivity extends AppCompatActivity {
     private EditText title;
     private EditText date;
 
-    private String fileTitle;
-    private String fileDate;
-    private File fileDir;
-
-    private File photoFile = null;
     private Uri photoURI;
-    private File imageFile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +46,6 @@ public class CameraActivity extends AppCompatActivity {
         imageView = findViewById(R.id.camera_activity_photo);
         title = findViewById(R.id.camera_activity_title);
         date = findViewById(R.id.camera_activity_date);
-//        saveThePic = findViewById(R.id.camera_activity_save);
 
         pictureIntent();
         saveData();
@@ -77,12 +73,11 @@ public class CameraActivity extends AppCompatActivity {
      */
     private File createNewImageFile() {
         try {
-            fileDate = date.getText().toString();
-            fileTitle/*fileName*/ = title.getText().toString();/*"JPEG_" + fileDate + "_"*/;
-            fileDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            imageFile = File.createTempFile(fileTitle/*fileName*/, ".jpg", fileDir);
+            String timeStamp = new SimpleDateFormat("ddMMyyyy").format(new Date());
+            String fileName = "JPEG_" + timeStamp + "_";
+            File fileDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File imageFile = File.createTempFile(fileName, ".jpg", fileDir);
 
-            //String photoPath = imageFile.getAbsolutePath();
             return imageFile;
         } catch (IOException e) {
             e.printStackTrace();
@@ -92,7 +87,7 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void pictureIntent() {
-        photoFile = createNewImageFile();
+        File photoFile = createNewImageFile();
 
         if (photoFile != null) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -106,17 +101,20 @@ public class CameraActivity extends AppCompatActivity {
     private void saveData() {
         ReceiptData receipt = new ReceiptData();
 
-        if(fileTitle != null || fileDir != null) {
+        String fileDate = date.getText().toString();
+        String fileTitle = title.getText().toString();
+
+        if (fileTitle != null || fileDate != null) {
             receipt.setTitle(fileTitle);
-            receipt.setDirectory(fileDir);
+            receipt.setDate(fileDate);
+
+            RealmHelper helper = RealmHelper.getInstance();
+            Realm realm = helper.getRealm();
+
+            realm.executeTransaction(realm1 -> {
+                realm.copyToRealmOrUpdate(receipt);
+                Log.d(TAG, "Data added");
+            });
         }
-        receipt.setDate(fileDate);
-
-        RealmHelper helper = RealmHelper.getInstance();
-        Realm realm = helper.getRealm();
-
-        realm.executeTransaction(realm1 -> {
-            realm.copyToRealmOrUpdate(receipt);
-        });
     }
 }
