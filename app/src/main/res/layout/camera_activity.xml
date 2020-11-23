@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/camera_activity_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Set a title"
+        android:layout_above="@id/camera_activity_date"
+        />
+
+    <EditText
+        android:id="@+id/camera_activity_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Set a date"
+        android:layout_above="@id/camera_activity_photo"
+        />
 
     <ImageView
         android:id="@+id/camera_activity_photo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:scaleType="centerCrop"
         />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/camera_activity_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/camera_activity_photo"
+        android:layout_centerHorizontal="true"
+        android:text="Save the receipt"
+        />
+
+</RelativeLayout>

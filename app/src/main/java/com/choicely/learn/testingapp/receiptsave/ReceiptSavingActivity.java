@@ -1,4 +1,4 @@
-package com.choicely.learn.testingapp;
+package com.choicely.learn.testingapp.receiptsave;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,9 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class RecipeSavingActivity extends AppCompatActivity {
+import com.choicely.learn.testingapp.R;
+
+public class ReceiptSavingActivity extends AppCompatActivity {
 
     private ImageButton cameraButton;
 
@@ -16,7 +18,7 @@ public class RecipeSavingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_saving_activity);
 
-        cameraButton = findViewById(R.id.recipe_saving_activity_camera);
+        cameraButton = findViewById(R.id.receipt_saving_activity_camera);
 
         cameraButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, CameraActivity.class);

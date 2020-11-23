@@ -1,9 +1,11 @@
-package com.choicely.learn.testingapp;
+package com.choicely.learn.testingapp.receiptsave;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.choicely.learn.testingapp.R;
 
 public class ShowPictureActivity extends AppCompatActivity {
     @Override

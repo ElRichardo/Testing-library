@@ -49,16 +49,16 @@
             android:windowSoftInputMode="adjustResize"
             />
         <activity
-            android:name=".RecipeSavingActivity"
+            android:name=".receiptsave.ReceiptSavingActivity"
             android:parentActivityName=".MainActivity"
             />
         <activity
-            android:name=".CameraActivity"
-            android:parentActivityName=".RecipeSavingActivity"
+            android:name=".receiptsave.CameraActivity"
+            android:parentActivityName=".receiptsave.ReceiptSavingActivity"
             />
         <activity
-            android:name=".ShowPictureActivity"
-            android:parentActivityName=".RecipeSavingActivity"
+            android:name=".receiptsave.ShowPictureActivity"
+            android:parentActivityName=".receiptsave.ReceiptSavingActivity"
             />
 
         <provider

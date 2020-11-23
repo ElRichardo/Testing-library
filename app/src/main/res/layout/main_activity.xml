@@ -84,7 +84,7 @@
             android:layout_marginTop="34dp"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
-            android:text="Recipe saving app"
+            android:text="Receipt saving app"
             />
 
     </LinearLayout>

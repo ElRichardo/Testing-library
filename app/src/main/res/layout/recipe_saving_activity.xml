@@ -12,7 +12,7 @@
         />
 
     <ImageButton
-        android:id="@+id/recipe_saving_activity_camera"
+        android:id="@+id/receipt_saving_activity_camera"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
