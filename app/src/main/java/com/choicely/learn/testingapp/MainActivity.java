@@ -12,9 +12,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 
+import com.choicely.learn.testingapp.countdowntimer.CountDownTimerActivity;
 import com.choicely.learn.testingapp.receiptsave.ReceiptSavingActivity;
 import com.choicely.learn.testingapp.viewpager.ViewPagerActivity;
 
@@ -30,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private Button viewPagerTest;
     private Button notificationTest;
     private Button scrollTest;
-    private Button recipeSaving;
+    private Button receiptSaving;
+    private Button countDownBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         viewPagerTest = findViewById(R.id.main_activity_view_pager);
         notificationTest = findViewById(R.id.main_activity_notification);
         scrollTest = findViewById(R.id.main_activity_adjust_screen);
-        recipeSaving = findViewById(R.id.main_activity_recipe_button);
+        receiptSaving = findViewById(R.id.main_activity_receipt_button);
+        countDownBtn = findViewById(R.id.main_activity_count_down);
 
         createNotificationChannel();
     }
@@ -75,8 +79,12 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, AdjustTestActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.main_activity_recipe_button:
+            case R.id.main_activity_receipt_button:
                 intent = new Intent(this, ReceiptSavingActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.main_activity_count_down:
+                intent = new Intent(this, CountDownTimerActivity.class);
                 startActivity(intent);
                 break;
         }

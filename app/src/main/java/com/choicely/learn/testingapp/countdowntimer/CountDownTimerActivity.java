@@ -1,4 +1,4 @@
-package com.choicely.learn.testingapp.receiptsave;
+package com.choicely.learn.testingapp.countdowntimer;
 
 import android.os.Bundle;
 
@@ -7,10 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.choicely.learn.testingapp.R;
 
-public class ShowPictureActivity extends AppCompatActivity {
+public class CountDownTimerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.show_picture_activity);
+        setContentView(R.layout.count_down_timer_activity);
     }
 }

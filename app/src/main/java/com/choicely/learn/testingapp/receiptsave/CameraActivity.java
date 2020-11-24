@@ -3,10 +3,8 @@ package com.choicely.learn.testingapp.receiptsave;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,7 +18,6 @@ import com.choicely.learn.testingapp.R;
 import com.choicely.learn.testingapp.db.RealmHelper;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,10 +26,10 @@ import io.realm.Sort;
 
 public class CameraActivity extends AppCompatActivity {
 
-    private static final String PICTURE_ID = "picID";
-    private static final int IMAGE_REQUEST_CODE = 1;
     private static final String FILE_PROVIDER_AUTHORITY = "com.example.android.fileprovider";
     private static final String TAG = "CameraActivity";
+    private static final String PICTURE_ID = "picID";
+    private static final int IMAGE_REQUEST_CODE = 1;
 
     private ImageView imageView;
     private EditText title;
@@ -41,6 +38,7 @@ public class CameraActivity extends AppCompatActivity {
 
     private Uri photoURI;
     private int picID;
+    private String fileName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,38 +82,23 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Need to create a file to save the image into
-     */
-    private File createNewImageFile() {
-        try {
-            String timeStamp = new SimpleDateFormat("ddMMyyyy").format(new Date());
-            String fileName = "JPEG_" + timeStamp + "_";
-            File fileDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            File imageFile = File.createTempFile(fileName, ".jpg", fileDir);
-
-            return imageFile;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //returns null if the try doesn't work
-        return null;
-    }
-
     private void updateID() {
         Realm realm = RealmHelper.getInstance().getRealm();
         ReceiptData latestID = realm.where(ReceiptData.class).sort(PICTURE_ID, Sort.DESCENDING).findFirst();
 
-        if(latestID != null) {
+        if (latestID != null) {
             picID = latestID.getPicID() + 1;
-        } else{
+        } else {
             picID = 0;
         }
         Log.d(TAG, "picID: " + picID);
     }
 
     private void pictureIntent() {
-        File photoFile = createNewImageFile();
+        String timeStamp = new SimpleDateFormat("HmmssddMMyyyy").format(new Date());
+        fileName = "JPEG_" + timeStamp + "_";
+
+        File photoFile = FileUtil.getJPEGFile(this, fileName);
 
         if (photoFile != null) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -136,6 +119,7 @@ public class CameraActivity extends AppCompatActivity {
         receipt.setTitle(fileTitle);
         receipt.setDate(fileDate);
         receipt.setPicID(picID);
+        receipt.setFileName(fileName);
 
         RealmHelper helper = RealmHelper.getInstance();
         Realm realm = helper.getRealm();

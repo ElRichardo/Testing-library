@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <EditText
+        android:id="@+id/receipt_saving_activity_textField"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        />
+
+    <ImageButton
+        android:id="@+id/receipt_saving_activity_search"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop"
+        android:layout_toRightOf="@id/receipt_saving_activity_textField"
+        android:src="@drawable/ic_search"
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/receipt_saving_activity_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/receipt_saving_activity_textField"
+        android:layout_above="@id/receipt_saving_activity_camera"
+        />
+
+    <ImageButton
+        android:id="@+id/receipt_saving_activity_camera"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_camera"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        />
+
+</RelativeLayout>

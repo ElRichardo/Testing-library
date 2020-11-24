@@ -57,9 +57,8 @@
             android:name=".receiptsave.CameraActivity"
             android:parentActivityName=".receiptsave.ReceiptSavingActivity"
             />
-        <activity
-            android:name=".receiptsave.ShowPictureActivity"
-            android:parentActivityName=".receiptsave.ReceiptSavingActivity"
+        <activity android:name=".countdowntimer.CountDownTimerActivity"
+            android:parentActivityName=".MainActivity"
             />
 
         <provider

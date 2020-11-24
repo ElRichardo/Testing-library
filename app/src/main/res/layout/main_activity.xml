@@ -77,14 +77,24 @@
             />
 
         <Button
-            android:id="@+id/main_activity_recipe_button"
+            android:id="@+id/main_activity_receipt_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="34dp"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
-            android:text="Receipt saving app"
+            android:text="Receipt saving app(ei toimi vielä)"
+            />
+
+        <Button
+            android:id="@+id/main_activity_count_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/black"
+            android:onClick="onClick"
+            android:text="Count Down timer"
             />
 
     </LinearLayout>

@@ -9,6 +9,7 @@ public class ReceiptData extends RealmObject {
     private int picID;
     private String title;
     private String date;
+    private String fileName;
 
     public int getPicID() { return picID; }
 
@@ -28,5 +29,13 @@ public class ReceiptData extends RealmObject {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }
