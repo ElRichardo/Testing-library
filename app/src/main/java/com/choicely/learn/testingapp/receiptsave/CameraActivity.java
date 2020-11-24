@@ -94,6 +94,7 @@ public class CameraActivity extends AppCompatActivity {
         Log.d(TAG, "picID: " + picID);
     }
 
+    //image saving doesn't work. Length of file was 0 for some reason,´.
     private void pictureIntent() {
         String timeStamp = new SimpleDateFormat("HmmssddMMyyyy").format(new Date());
         fileName = "JPEG_" + timeStamp + "_";
