@@ -1,13 +1,18 @@
 package com.choicely.learn.testingapp.receiptsave;
 
-import java.io.File;
-
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class ReceiptData extends RealmObject {
 
+    @PrimaryKey
+    private int picID;
     private String title;
     private String date;
+
+    public int getPicID() { return picID; }
+
+    public void setPicID(int picID) { this.picID = picID; }
 
     public String getTitle() {
         return title;

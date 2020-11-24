@@ -6,8 +6,8 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class RealmHelper {
-    private static final String TAG = "RealmHelper";
 
+    private static final String TAG = "RealmHelper";
     private static final String REALM_NAME = "NotepadApplication.realm";
     private static final int REALM_VERSION = RealmHistory.VERSION_1;
 
@@ -19,8 +19,7 @@ public class RealmHelper {
 
     private static RealmHelper instance;
 
-    private RealmHelper(){
-
+    private RealmHelper() {
     }
 
     public static RealmHelper getInstance() {
@@ -31,7 +30,7 @@ public class RealmHelper {
     }
 
     public static void init(TestingApplication testingApplication) {
-        if(instance != null){
+        if (instance != null) {
             throw new IllegalStateException(TAG + " is already initialized!");
         }
 
@@ -49,7 +48,7 @@ public class RealmHelper {
         instance.realm = Realm.getInstance(config);
     }
 
-    public Realm getRealm(){
+    public Realm getRealm() {
         return realm;
     }
 }

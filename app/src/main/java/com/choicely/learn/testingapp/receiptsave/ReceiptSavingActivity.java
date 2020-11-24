@@ -12,6 +12,7 @@ import com.choicely.learn.testingapp.R;
 public class ReceiptSavingActivity extends AppCompatActivity {
 
     private ImageButton cameraButton;
+    private int picID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class ReceiptSavingActivity extends AppCompatActivity {
 
         cameraButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, CameraActivity.class);
+            intent.putExtra("picID", picID);
             startActivity(intent);
         });
     }
