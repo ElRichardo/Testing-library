@@ -46,5 +46,4 @@
         android:layout_below="@id/count_down_timer_activity_numbers"
         android:layout_centerHorizontal="true"
         />
-
 </RelativeLayout>
