@@ -9,7 +9,7 @@ public class ReceiptData extends RealmObject {
     private int picID;
     private String title;
     private String date;
-    private String fileName;
+    private String photoUri;
 
     public int getPicID() { return picID; }
 
@@ -31,11 +31,12 @@ public class ReceiptData extends RealmObject {
         this.date = date;
     }
 
-    public String getFileName() {
-        return fileName;
+
+    public String getPhotoUri() {
+        return photoUri;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
     }
 }

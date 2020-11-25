@@ -6,8 +6,24 @@
     android:orientation="vertical">
 
     <EditText
+        android:id="@+id/count_down_timer_activity_set_time_text"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/count_down_timer_activity_numbers"
+        android:layout_marginBottom="20dp"
+        android:hint="minutes"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
+        android:id="@+id/count_down_timer_activity_time_set_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Set time"
+        android:layout_marginBottom="20dp"
+        android:onClick="onClick"
+        android:layout_toRightOf="@id/count_down_timer_activity_set_time_text"
+        android:layout_above="@id/count_down_timer_activity_numbers"
         />
 
     <TextView
@@ -25,6 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start timer"
+        android:layout_marginTop="30dp"
+        android:onClick="onClick"
         android:layout_below="@id/count_down_timer_activity_numbers"
         android:layout_centerHorizontal="true"
         />

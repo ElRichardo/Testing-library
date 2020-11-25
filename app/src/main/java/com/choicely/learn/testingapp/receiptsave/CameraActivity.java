@@ -38,7 +38,6 @@ public class CameraActivity extends AppCompatActivity {
 
     private Uri photoURI;
     private int picID;
-    private String fileName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,14 +96,14 @@ public class CameraActivity extends AppCompatActivity {
     //image saving doesn't work. Length of file was 0 for some reason,´.
     private void pictureIntent() {
         String timeStamp = new SimpleDateFormat("HmmssddMMyyyy").format(new Date());
-        fileName = "JPEG_" + timeStamp + "_";
+        String fileName = "JPEG_" + timeStamp + "_";
 
         File photoFile = FileUtil.getJPEGFile(this, fileName);
 
         if (photoFile != null) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
             photoURI = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, photoFile);
+
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             takePictureIntent.putExtra(PICTURE_ID, picID);
             startActivityForResult(takePictureIntent, IMAGE_REQUEST_CODE);
@@ -120,7 +119,7 @@ public class CameraActivity extends AppCompatActivity {
         receipt.setTitle(fileTitle);
         receipt.setDate(fileDate);
         receipt.setPicID(picID);
-        receipt.setFileName(fileName);
+        receipt.setPhotoUri(photoURI.toString());
 
         RealmHelper helper = RealmHelper.getInstance();
         Realm realm = helper.getRealm();

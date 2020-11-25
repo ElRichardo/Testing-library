@@ -3,7 +3,9 @@ package com.choicely.learn.testingapp.receiptsave;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,15 +45,10 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptV
     public void onBindViewHolder(@NonNull ReceiptViewHolder holder, int position) {
         ReceiptData receipt = list.get(position);
 
-        holder.textView.setText("title: " + receipt.getTitle() + " date: " + receipt.getDate() + " id: " + receipt.getPicID());
+        holder.textView.setText("Title: " + receipt.getTitle() + "\n" + " Date: " + receipt.getDate());
 
-        File file = FileUtil.getJPEGFile(holder.imageView.getContext(), receipt.getFileName());
-        setImage(file, holder.imageView);
-    }
-
-    private void setImage(File file, ImageView image) {
-        Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-        image.setImageBitmap(myBitmap);
+        Uri photoUri = Uri.parse(receipt.getPhotoUri());
+        holder.imageView.setImageURI(photoUri);
     }
 
     public void add(ReceiptData receipt) { list.add(receipt); }
