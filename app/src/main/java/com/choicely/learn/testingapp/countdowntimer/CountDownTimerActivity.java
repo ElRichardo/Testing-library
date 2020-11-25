@@ -20,11 +20,14 @@ import java.util.concurrent.TimeUnit;
 public class CountDownTimerActivity extends AppCompatActivity {
 
     private static final String TAG = "CountDownTimerActivity";
+
     private TextView countDownText;
     private EditText timeSetByUser;
     private Button startButton;
     private Button setTime;
+
     private long startTimeMillis;
+    private long timeLeftInMillis;
 
     private CountDownTimer countDownTimer;
 
@@ -69,19 +72,8 @@ public class CountDownTimerActivity extends AppCompatActivity {
         countDownTimer = new CountDownTimer(startTimeMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-
-                long seconds = (millisUntilFinished / 1000) % 60;
-                long minutes = ((millisUntilFinished / (1000 * 60)) % 60);
-                long hours = ((millisUntilFinished / (1000 * 60 * 60)) % 24);
-
-                if (hours == 0) {
-                    //countDownText.setText(minutes + ":" + seconds);
-                    countDownText.setText(String.format(Locale.getDefault(), "%d:%d", minutes, seconds));
-
-                } else {
-//                    countDownText.setText(hours + ":" + minutes + ":" + seconds);
-                    countDownText.setText(String.format(Locale.getDefault(), "%d:%d:%d", hours, minutes, seconds));
-                }
+                timeLeftInMillis = millisUntilFinished;
+                updateCountdownTimer();
             }
 
             @Override
@@ -91,5 +83,20 @@ public class CountDownTimerActivity extends AppCompatActivity {
                 startButton.setBackgroundResource(R.color.design_default_color_background);
             }
         }.start();
+    }
+
+    private void updateCountdownTimer() {
+        long seconds = (timeLeftInMillis / 1000) % 60;
+        long minutes = ((timeLeftInMillis / (1000 * 60)) % 60);
+        long hours = ((timeLeftInMillis / (1000 * 60 * 60)) % 24);
+
+        if (hours == 0) {
+            //countDownText.setText(minutes + ":" + seconds);
+            countDownText.setText(String.format(Locale.getDefault(), "%d:%d", minutes, seconds));
+
+        } else {
+            //countDownText.setText(hours + ":" + minutes + ":" + seconds);
+            countDownText.setText(String.format(Locale.getDefault(), "%d:%d:%d", hours, minutes, seconds));
+        }
     }
 }
