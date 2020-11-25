@@ -23,7 +23,6 @@ public class CountDownTimerActivity extends AppCompatActivity {
     private TextView countDownText;
     private EditText timeSetByUser;
     private Button startButton;
-    private Button pauseButton;
     private Button setTime;
     private long startTimeMillis;
 
