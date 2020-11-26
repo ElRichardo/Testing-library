@@ -41,7 +41,6 @@ public class RandomStringsActivity extends AppCompatActivity {
                 for (int i = 0; i < length; i++) {
                     String randomString = UUID.randomUUID().toString();
                     list.add(randomString);
-                    Log.d(TAG, randomString);
                 }
                 countText.post(() -> {
                     countText.setText("Amount of strings: " + list.size());
