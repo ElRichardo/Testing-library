@@ -97,6 +97,17 @@
             android:text="Count Down timer"
             />
 
+        <Button
+            android:id="@+id/main_activity_random_strings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/black"
+            android:layout_marginTop="38dp"
+            android:onClick="onClick"
+            android:text="Million random strings"
+            />
+
     </LinearLayout>
 
 </ScrollView>

@@ -1,9 +1,5 @@
 package com.choicely.learn.testingapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,9 +8,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.choicely.learn.testingapp.countdowntimer.CountDownTimerActivity;
 import com.choicely.learn.testingapp.receiptsave.ReceiptSavingActivity;
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private Button scrollTest;
     private Button receiptSaving;
     private Button countDownBtn;
+    private Button randomStrings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         scrollTest = findViewById(R.id.main_activity_adjust_screen);
         receiptSaving = findViewById(R.id.main_activity_receipt_button);
         countDownBtn = findViewById(R.id.main_activity_count_down);
+        randomStrings = findViewById(R.id.main_activity_random_strings);
 
         createNotificationChannel();
     }
@@ -85,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.main_activity_count_down:
                 intent = new Intent(this, CountDownTimerActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.main_activity_random_strings:
+                intent  = new Intent(this, RandomStringsActivity.class);
                 startActivity(intent);
                 break;
         }
