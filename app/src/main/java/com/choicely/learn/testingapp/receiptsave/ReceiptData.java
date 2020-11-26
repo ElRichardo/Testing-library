@@ -31,7 +31,6 @@ public class ReceiptData extends RealmObject {
         this.date = date;
     }
 
-
     public String getPhotoUri() {
         return photoUri;
     }

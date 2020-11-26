@@ -16,6 +16,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.choicely.learn.testingapp.countdowntimer.CountDownTimerActivity;
+import com.choicely.learn.testingapp.imagegallery.ImageGalleryActivity;
 import com.choicely.learn.testingapp.receiptsave.ReceiptSavingActivity;
 import com.choicely.learn.testingapp.viewpager.ViewPagerActivity;
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Button receiptSaving;
     private Button countDownBtn;
     private Button randomStrings;
+    private Button imageGallery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.main_activity_random_strings:
                 intent  = new Intent(this, RandomStringsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.main_activity_image_gallery:
+                intent = new Intent(this, ImageGalleryActivity.class);
                 startActivity(intent);
                 break;
         }

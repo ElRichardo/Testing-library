@@ -43,7 +43,7 @@ public class RandomStringsActivity extends AppCompatActivity {
                     list.add(randomString);
                 }
                 countText.post(() -> {
-                    countText.setText("Amount of strings: " + list.size());
+                    countText.setText("Finished!" + "\n" + "Amount of strings: " + list.size());
                 });
             }).start();
         }

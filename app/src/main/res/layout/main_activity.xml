@@ -84,7 +84,7 @@
             android:layout_marginTop="34dp"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
-            android:text="Receipt saving app(ei toimi vielä)"
+            android:text="Receipt saving app"
             />
 
         <Button
@@ -106,6 +106,17 @@
             android:layout_marginTop="38dp"
             android:onClick="onClick"
             android:text="Million random strings"
+            />
+
+        <Button
+            android:id="@+id/main_activity_image_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/black"
+            android:layout_marginTop="18dp"
+            android:onClick="onClick"
+            android:text="Image gallery"
             />
 
     </LinearLayout>

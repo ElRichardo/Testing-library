@@ -63,6 +63,9 @@
         <activity android:name=".RandomStringsActivity"
             android:parentActivityName=".MainActivity"
             />
+        <activity android:name=".imagegallery.ImageGalleryActivity"
+            android:parentActivityName=".MainActivity"
+            />
 
         <provider
             android:name="androidx.core.content.FileProvider"

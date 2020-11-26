@@ -2,6 +2,8 @@ package com.choicely.learn.testingapp.receiptsave;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -45,17 +47,19 @@ public class ReceiptSavingActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
-
         cameraButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, CameraActivity.class);
             intent.putExtra("picID", picID);
             startActivity(intent);
         });
 
+        //I could also add a textchangelistener which makes the query as soon as the user writes to the field
         searchButton.setOnClickListener(v -> {
             updateContent();
         });
     }
+
+
 
     private void updateContent() {
         adapter.clear();
@@ -63,9 +67,13 @@ public class ReceiptSavingActivity extends AppCompatActivity {
         RealmHelper helper = RealmHelper.getInstance();
         Realm realm = helper.getRealm();
 
-        RealmResults<ReceiptData> receipts = realm.where(ReceiptData.class).like("title", searchBar.getText().toString()).findAll();
+        RealmResults<ReceiptData> receipts = realm.where(ReceiptData.class)
+                .contains("title", searchBar.getText().toString())
+                .or()
+                .contains("date", searchBar.getText().toString())
+                .findAll();
 
-        for(ReceiptData receipt: receipts){
+        for (ReceiptData receipt : receipts) {
             adapter.add(receipt);
         }
 
