@@ -1,6 +1,7 @@
 package com.choicely.learn.testingapp.imagegallery;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,8 @@ public class ShowGalleryPicsActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
     ImageGalleryAdapter adapter;
+    private ImageButton trashCan;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -26,4 +26,15 @@
         tools:text="Urlin nimi"
         />
 
+    <ImageButton
+        android:id="@+id/fragment_for_pics_remove_url"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/ic_trash_can"
+        android:backgroundTint="@color/black"
+        android:scaleType="centerCrop"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        />
+
 </RelativeLayout>

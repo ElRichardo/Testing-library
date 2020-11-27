@@ -43,4 +43,5 @@ public class ImageGalleryAdapter extends FragmentStateAdapter {
 
     public void clear() { list.clear(); }
 
+    //public void remove(ImageGalleryData image){list.remove(image);}
 }
