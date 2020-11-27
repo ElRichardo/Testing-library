@@ -64,7 +64,6 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptV
 
     public class ReceiptViewHolder extends RecyclerView.ViewHolder {
 
-        //        public int picID;
         public TextView textView;
         public ImageView imageView;
 

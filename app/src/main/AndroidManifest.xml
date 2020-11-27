@@ -4,7 +4,9 @@
     package="com.choicely.learn.testingapp"
     >
 
-    <uses-feature android:name="android.hardware.camera"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -13,13 +15,13 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".app.TestingApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TestingApp"
-        android:name=".app.TestingApplication"
         >
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -57,14 +59,21 @@
             android:name=".receiptsave.CameraActivity"
             android:parentActivityName=".receiptsave.ReceiptSavingActivity"
             />
-        <activity android:name=".countdowntimer.CountDownTimerActivity"
+        <activity
+            android:name=".countdowntimer.CountDownTimerActivity"
             android:parentActivityName=".MainActivity"
             />
-        <activity android:name=".RandomStringsActivity"
+        <activity
+            android:name=".RandomStringsActivity"
             android:parentActivityName=".MainActivity"
             />
-        <activity android:name=".imagegallery.ImageGalleryActivity"
+        <activity
+            android:name=".imagegallery.ImageGalleryActivity"
             android:parentActivityName=".MainActivity"
+            />
+        <activity
+            android:name=".imagegallery.ShowGalleryPicsActivity"
+            android:parentActivityName=".imagegallery.ShowGalleryPicsActivity"
             />
 
         <provider
