@@ -7,7 +7,7 @@
         android:id="@+id/image_gallery_activity_add_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Add url" />
+        android:hint="Copy the url here" />
 
     <EditText
         android:id="@+id/image_gallery_activity_name_url"

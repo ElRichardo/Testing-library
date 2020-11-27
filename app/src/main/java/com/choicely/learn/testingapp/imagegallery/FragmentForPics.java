@@ -73,7 +73,7 @@ public class FragmentForPics extends Fragment {
 
         //tää on aika likanen tapa tehdä tää, koska mä en poista adapterista suoraan
         //kierrän ongelman lähtemällä sivulta pois, koska ei ollu nyt aikaa.
-        //adapteri oli nulli jostain syystä. 
+        //adapteri oli nulli jostain syystä.
         //TODO: poista itemi adapterista suoraan
         Intent intent = new Intent(getActivity(), ImageGalleryActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
