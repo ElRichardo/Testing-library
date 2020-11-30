@@ -5,8 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+    <Spinner
+        android:id="@+id/show_gallery_pics_type_dropdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/show_gallery_pics_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </LinearLayout>

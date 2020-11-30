@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,19 +17,12 @@ import com.choicely.learn.testingapp.R;
 import com.choicely.learn.testingapp.db.RealmHelper;
 import com.squareup.picasso.Picasso;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import io.realm.Realm;
-import io.realm.RealmObject;
-import io.realm.RealmResults;
-import io.realm.Sort;
 
 public class FragmentForPics extends Fragment {
 
     private View view;
+    private TextView urlTextTesting;
     private TextView imageName;
     private ImageView imageView;
     private ImageButton trashCan;
@@ -51,6 +43,9 @@ public class FragmentForPics extends Fragment {
         url = data.getString("pictureUrl", "");
         imageView = view.findViewById(R.id.fragment_for_pics_url_image);
         Picasso.get().load(url).into(imageView);
+
+        urlTextTesting = view.findViewById(R.id.fragment_for_pics_url_text_testing);
+        urlTextTesting.setText(url);
 
         String urlName = data.getString("UrlName", "");
         imageName = view.findViewById(R.id.fragment_for_pics_url_name);
