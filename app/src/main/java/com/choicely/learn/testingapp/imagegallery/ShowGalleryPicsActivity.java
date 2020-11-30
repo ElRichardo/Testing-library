@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ public class ShowGalleryPicsActivity extends AppCompatActivity {
     private static final String TAG = "ShowGalleryPicsActivity";
     private static final String JPG_ITEM = ".jpg";
     private static final String PNG_ITEM = ".png";
+    private static final String NO_FILTER_ITEM = "no filter";
 
     private ViewPager2 viewPager;
     ImageGalleryAdapter adapter;
@@ -39,24 +41,29 @@ public class ShowGalleryPicsActivity extends AppCompatActivity {
         adapter = new ImageGalleryAdapter(this);
         viewPager.setAdapter(adapter);
 
-        //updateContent();
         setDropDownAdapter();
 
         imageTypeDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = imageTypeDropDown.getSelectedItem().toString();
+                String selectedItem = parent.getSelectedItem().toString();
+                Log.d(TAG, "selected: " + selectedItem);
 
-                if(selectedItem.equals(JPG_ITEM)){
-                    suffix = JPG_ITEM;
+                if(selectedItem.equals(NO_FILTER_ITEM)){
+                    showEverythingInAdapter();
+                    Log.d(TAG, "Näytä kaikki");
                 } else if(selectedItem.equals(PNG_ITEM)){
                     suffix = PNG_ITEM;
+                    addToAdapterByType();
+                } else if (selectedItem.equals(JPG_ITEM)){
+                    suffix = JPG_ITEM;
+                    addToAdapterByType();
                 }
-                addToAdapterByType();
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                Log.d(TAG, "nothing selected");
             }
         });
     }
@@ -86,7 +93,7 @@ public class ShowGalleryPicsActivity extends AppCompatActivity {
         imageTypeDropDown.setAdapter(dropDownAdapter);
     }
 
-    private void updateContent() {
+    private void showEverythingInAdapter() {
         adapter.clear();
 
         RealmHelper helper = RealmHelper.getInstance();
