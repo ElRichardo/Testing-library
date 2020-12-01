@@ -1,6 +1,7 @@
 package com.choicely.learn.testingapp.imagegallery;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -37,9 +38,14 @@ public class ImageGalleryAdapter extends FragmentStateAdapter {
     }
 
     @Override
-    public int getItemCount() {
-        return list.size();
-    }
+    public int getItemCount() { return list.size(); }
+
+    /**
+     * the whole filtering by type doesn't work without this
+     * the fragments need ids if they are updated on top of each others positions
+     **/
+    @Override
+    public long getItemId(int position) { return list.get(position).getGalleryPicID(); }
 
     public void add(ImageGalleryData image) { list.add(image); }
 

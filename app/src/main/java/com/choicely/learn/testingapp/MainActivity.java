@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private Button countDownBtn;
     private Button randomStrings;
     private Button imageGallery;
+    private Button citySearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         receiptSaving = findViewById(R.id.main_activity_receipt_button);
         countDownBtn = findViewById(R.id.main_activity_count_down);
         randomStrings = findViewById(R.id.main_activity_random_strings);
+        citySearch = findViewById(R.id.main_activity_city_search);
 
         createNotificationChannel();
     }
@@ -92,11 +94,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.main_activity_random_strings:
-                intent  = new Intent(this, RandomStringsActivity.class);
+                intent = new Intent(this, RandomStringsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.main_activity_image_gallery:
                 intent = new Intent(this, ImageGalleryActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.main_activity_city_search:
+                intent = new Intent(this, CitySearchActivity.class);
                 startActivity(intent);
                 break;
         }

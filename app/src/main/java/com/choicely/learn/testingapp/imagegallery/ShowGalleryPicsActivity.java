@@ -21,8 +21,10 @@ import io.realm.RealmResults;
 public class ShowGalleryPicsActivity extends AppCompatActivity {
 
     private static final String TAG = "ShowGalleryPicsActivity";
+    private static final String JPEG_ITEM = ".jpeg";
     private static final String JPG_ITEM = ".jpg";
     private static final String PNG_ITEM = ".png";
+    private static final String WEBP_ITEM = ".webP";
     private static final String NO_FILTER_ITEM = "no filter";
 
     private ViewPager2 viewPager;
@@ -49,17 +51,30 @@ public class ShowGalleryPicsActivity extends AppCompatActivity {
                 String selectedItem = parent.getSelectedItem().toString();
                 Log.d(TAG, "selected: " + selectedItem);
 
-                if(selectedItem.equals(NO_FILTER_ITEM)){
-                    showEverythingInAdapter();
-                    Log.d(TAG, "Näytä kaikki");
-                } else if(selectedItem.equals(PNG_ITEM)){
-                    suffix = PNG_ITEM;
-                    addToAdapterByType();
-                } else if (selectedItem.equals(JPG_ITEM)){
-                    suffix = JPG_ITEM;
-                    addToAdapterByType();
+                switch (selectedItem) {
+                    default:
+                    case NO_FILTER_ITEM:
+                        showEverythingInAdapter();
+                        break;
+                    case JPEG_ITEM:
+                        suffix = JPEG_ITEM;
+                        addToAdapterByType();
+                        break;
+                    case JPG_ITEM:
+                        suffix = JPG_ITEM;
+                        addToAdapterByType();
+                        break;
+                    case PNG_ITEM:
+                        suffix = PNG_ITEM;
+                        addToAdapterByType();
+                        break;
+                    case WEBP_ITEM:
+                        suffix = WEBP_ITEM;
+                        addToAdapterByType();
+                        break;
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 Log.d(TAG, "nothing selected");
@@ -73,7 +88,7 @@ public class ShowGalleryPicsActivity extends AppCompatActivity {
         RealmHelper helper = RealmHelper.getInstance();
         Realm realm = helper.getRealm();
 
-        if(suffix != null) {
+        if (suffix != null) {
             RealmResults<ImageGalleryData> images = realm.where(ImageGalleryData.class).contains("pictureUrl", suffix).findAll();
 
             for (ImageGalleryData image : images) {
