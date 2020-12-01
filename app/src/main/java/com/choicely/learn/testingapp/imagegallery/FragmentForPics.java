@@ -66,10 +66,7 @@ public class FragmentForPics extends Fragment {
             realm.where(ImageGalleryData.class).equalTo("pictureUrl", url).findAll().deleteAllFromRealm();
         });
 
-        //tää on aika likanen tapa tehdä tää, koska mä en poista adapterista suoraan
-        //kierrän ongelman lähtemällä sivulta pois, koska ei ollu nyt aikaa.
-        //adapteri oli nulli jostain syystä.
-        //TODO: poista itemi adapterista suoraan
+        //TODO: tee tää paremmin
         Intent intent = new Intent(getActivity(), ImageGalleryActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

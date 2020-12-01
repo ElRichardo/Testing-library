@@ -59,7 +59,6 @@ public class ShowGalleryPicsActivity extends AppCompatActivity {
                     suffix = JPG_ITEM;
                     addToAdapterByType();
                 }
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -70,6 +69,7 @@ public class ShowGalleryPicsActivity extends AppCompatActivity {
 
     private void addToAdapterByType() {
         adapter.clear();
+
         RealmHelper helper = RealmHelper.getInstance();
         Realm realm = helper.getRealm();
 
@@ -79,7 +79,6 @@ public class ShowGalleryPicsActivity extends AppCompatActivity {
             for (ImageGalleryData image : images) {
                 adapter.add(image);
             }
-
             adapter.notifyDataSetChanged();
         }
     }

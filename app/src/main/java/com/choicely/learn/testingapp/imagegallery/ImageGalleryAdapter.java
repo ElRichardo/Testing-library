@@ -12,6 +12,8 @@ import com.choicely.learn.testingapp.viewpager.FragmentTest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static androidx.viewpager.widget.PagerAdapter.POSITION_NONE;
+
 public class ImageGalleryAdapter extends FragmentStateAdapter {
 
     private final List<ImageGalleryData> list = new ArrayList<>();
@@ -42,6 +44,4 @@ public class ImageGalleryAdapter extends FragmentStateAdapter {
     public void add(ImageGalleryData image) { list.add(image); }
 
     public void clear() { list.clear(); }
-
-    //public void remove(ImageGalleryData image){list.remove(image);}
 }

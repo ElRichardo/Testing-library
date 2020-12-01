@@ -18,6 +18,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.choicely.learn.testingapp.countdowntimer.CountDownTimerActivity;
 import com.choicely.learn.testingapp.imagegallery.ImageGalleryActivity;
 import com.choicely.learn.testingapp.receiptsave.ReceiptSavingActivity;
+import com.choicely.learn.testingapp.threading.RandomStringsActivity;
 import com.choicely.learn.testingapp.viewpager.ViewPagerActivity;
 
 public class MainActivity extends AppCompatActivity {

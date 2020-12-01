@@ -46,9 +46,9 @@ public class ImageGalleryActivity extends AppCompatActivity {
 
         addImage.setOnClickListener(v -> {
             updateID();
-            if(addUrl.getText().toString() != null) {
+            if (addUrl.getText().length() > 0) {
                 saveImage();
-            } else{
+            } else {
                 Toast.makeText(this, "Give an url please!", Toast.LENGTH_SHORT).show();
             }
             addUrl.setText(null);

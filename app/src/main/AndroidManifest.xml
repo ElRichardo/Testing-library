@@ -64,7 +64,7 @@
             android:parentActivityName=".MainActivity"
             />
         <activity
-            android:name=".RandomStringsActivity"
+            android:name=".threading.RandomStringsActivity"
             android:parentActivityName=".MainActivity"
             />
         <activity

@@ -9,7 +9,6 @@ public class ImageGalleryData extends RealmObject {
     private int galleryPicID;
     private String pictureName;
     private String pictureUrl;
-    private String type;
 
     public int getGalleryPicID() {
         return galleryPicID;
@@ -34,8 +33,4 @@ public class ImageGalleryData extends RealmObject {
     public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
     }
-
-    public String getType() { return type; }
-
-    public void setType(String type) { this.type = type; }
 }
