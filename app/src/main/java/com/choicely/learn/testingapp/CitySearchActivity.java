@@ -57,6 +57,7 @@ public class CitySearchActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 loadingIndicator.setVisibility(View.VISIBLE);
                 createUrlAndAddCitiesToAdapter();
+                //TODO: timing of the loading circle doesn't work properly
                 Handler handler = new Handler();
                 handler.postDelayed(() -> loadingIndicator.setVisibility(View.INVISIBLE), 3000);
             }
