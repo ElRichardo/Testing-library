@@ -31,6 +31,7 @@ public class ShowGalleryPicsActivity extends AppCompatActivity {
     ImageGalleryAdapter adapter;
     private Spinner imageTypeDropDown;
     private String suffix;
+    private Button removeButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class ShowGalleryPicsActivity extends AppCompatActivity {
         setContentView(R.layout.show_gallery_pics_activity);
 
         imageTypeDropDown = findViewById(R.id.show_gallery_pics_type_dropdown);
+        removeButton = findViewById(R.id.show_gallery_pics_remove);
 
         viewPager = findViewById(R.id.show_gallery_pics_pager);
         adapter = new ImageGalleryAdapter(this);
@@ -80,7 +82,21 @@ public class ShowGalleryPicsActivity extends AppCompatActivity {
                 Log.d(TAG, "nothing selected");
             }
         });
+
+        removeButton.setOnClickListener(v -> {
+            //removeImage();
+        });
+
     }
+
+//    private void removeImage() {
+//        RealmHelper helper = RealmHelper.getInstance();
+//        Realm realm = helper.getRealm();
+    //
+//        realm.executeTransaction(realm1 -> {
+//            realm.where(ImageGalleryData.class).equalTo("pictureUrl", url).findAll().deleteAllFromRealm();
+//        });
+//    }
 
     private void addToAdapterByType() {
         adapter.clear();

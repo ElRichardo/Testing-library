@@ -27,6 +27,7 @@ public class FragmentForPics extends Fragment {
     private ImageView imageView;
     private ImageButton trashCan;
     private String url;
+    ImageGalleryAdapter adapter;
 
     @Nullable
     @Override
@@ -54,21 +55,23 @@ public class FragmentForPics extends Fragment {
         trashCan = view.findViewById(R.id.fragment_for_pics_remove_url);
 
         trashCan.setOnClickListener(v -> {
-            removeImage();
+            //removeImage();
         });
     }
 
-    private void removeImage() {
-        RealmHelper helper = RealmHelper.getInstance();
-        Realm realm = helper.getRealm();
-
-        realm.executeTransaction(realm1 -> {
-            realm.where(ImageGalleryData.class).equalTo("pictureUrl", url).findAll().deleteAllFromRealm();
-        });
-
-        //TODO: tee tää paremmin
-        Intent intent = new Intent(getActivity(), ImageGalleryActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-    }
+//    private void removeImage() {
+//        ShowGalleryPicsActivity showGalleryPicsActivity = new ShowGalleryPicsActivity();
+//
+//        RealmHelper helper = RealmHelper.getInstance();
+//        Realm realm = helper.getRealm();
+//
+//        realm.executeTransaction(realm1 -> {
+//            realm.where(ImageGalleryData.class).equalTo("pictureUrl", url).findAll().deleteAllFromRealm();
+//        });
+//
+//        //TODO: tee tää paremmin
+//        Intent intent = new Intent(getActivity(), ImageGalleryActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(intent);
+//    }
 }
