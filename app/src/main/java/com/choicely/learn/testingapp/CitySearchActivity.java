@@ -37,7 +37,6 @@ public class CitySearchActivity extends AppCompatActivity {
     private final List<String> list = new ArrayList<>();
 
     private AutoCompleteTextView searchBar;
-    private String city;
     private String cityFullName;
     private ProgressBar loadingIndicator;
 
@@ -69,7 +68,7 @@ public class CitySearchActivity extends AppCompatActivity {
     }
 
     private void createUrlAndAddCitiesToAdapter() {
-        city = searchBar.getText().toString();
+        String city = searchBar.getText().toString();
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("geo-test.choicely.com")

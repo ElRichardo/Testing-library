@@ -13,6 +13,8 @@ import com.choicely.learn.testingapp.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class RandomStringsActivity extends AppCompatActivity {
 
@@ -21,6 +23,8 @@ public class RandomStringsActivity extends AppCompatActivity {
     private final List list = new ArrayList();
     private Button createStrings;
     private TextView countText;
+    private long start;
+    private ExecutorService threadPool = Executors.newFixedThreadPool(1);//number says how many threads can be at the same time
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,23 +35,23 @@ public class RandomStringsActivity extends AppCompatActivity {
         countText = findViewById(R.id.random_strings_activity_count);
 
         createStrings.setOnClickListener(v -> {
-            MyThread thread = new MyThread();
-            thread.getRandomStrings(1000000);
-            thread.start();
+            start = System.currentTimeMillis();
+            for(int i = 0; i < 4; i++){
+                getRandomStrings(250_000);
+            }
         });
     }
 
-    class MyThread extends Thread {
         private void getRandomStrings(int length) {
-            new Thread(() -> {
+            threadPool.submit(() -> {
                 for (int i = 0; i < length; i++) {
+                    Log.d(TAG, "iteration: " + i);
                     String randomString = UUID.randomUUID().toString();
                     list.add(randomString);
                 }
                 countText.post(() -> {
-                    countText.setText("Finished!" + "\n" + "Amount of strings: " + list.size());
+                    countText.setText(String.format("Finished! time: %d\nAmount of strings: %d", (System.currentTimeMillis()-start), list.size()));
                 });
-            }).start();
+            });
         }
-    }
 }
