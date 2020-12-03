@@ -2,7 +2,6 @@ package com.choicely.learn.testingapp;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.service.autofill.FieldClassification;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ImageTestActivity extends AppCompatActivity {
+public class ImageRotationTestActivity extends AppCompatActivity {
 
     private static final String TAG = "ImageTestActivity";
 
@@ -22,10 +21,10 @@ public class ImageTestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.image_test_activity);
+        setContentView(R.layout.image_rotation_test_activity);
 
-        imageView = findViewById(R.id.image_test_activity_button);
-        frameLayout = findViewById(R.id.image_test_activity_layout);
+        imageView = findViewById(R.id.image_rotation_test_activity_button);
+        frameLayout = findViewById(R.id.image_rotation_test_activity_layout);
         frameLayout.setOnTouchListener(onRotateTouchListener);
     }
 

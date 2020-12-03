@@ -45,7 +45,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptV
     public void onBindViewHolder(@NonNull ReceiptViewHolder holder, int position) {
         ReceiptData receipt = list.get(position);
 
-        holder.textView.setText("Title: " + receipt.getTitle() + "\n" + " Date: " + receipt.getDate());
+        holder.textView.setText(String.format("Title: %s\n Date: %s", receipt.getTitle(), receipt.getDate()));
 
         Uri photoUri = Uri.parse(receipt.getPhotoUri());
         holder.imageView.setImageURI(photoUri);
@@ -62,7 +62,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptV
         list.clear();
     }
 
-    public class ReceiptViewHolder extends RecyclerView.ViewHolder {
+    public static class ReceiptViewHolder extends RecyclerView.ViewHolder {
 
         public TextView textView;
         public ImageView imageView;

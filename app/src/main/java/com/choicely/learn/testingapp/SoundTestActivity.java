@@ -40,6 +40,6 @@ public class SoundTestActivity extends AppCompatActivity {
         } else {
             testSound = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
         }
-        testID = testSound.load(this, R.raw.test, 1);
+        testID = testSound.load(this, R.raw.testimp3, 1);
     }
 }

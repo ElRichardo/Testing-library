@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ImageTestActivity"
+            android:name=".ImageRotationTestActivity"
             android:parentActivityName=".MainActivity"
             />
         <activity

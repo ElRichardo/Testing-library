@@ -1,8 +1,10 @@
 package com.choicely.learn.testingapp.receiptsave;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
@@ -18,8 +20,10 @@ import com.choicely.learn.testingapp.R;
 import com.choicely.learn.testingapp.db.RealmHelper;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.Sort;
@@ -93,12 +97,25 @@ public class CameraActivity extends AppCompatActivity {
         Log.d(TAG, "picID: " + picID);
     }
 
+    private File getJPEGFile(String fileName) {
+        try {
+            File fileDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File imageFile = File.createTempFile(fileName, ".jpg", fileDir);
+
+            return imageFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //returns null if the try doesn't work
+        return null;
+    }
+
     //image saving doesn't work. Length of file was 0 for some reason,´.
     private void pictureIntent() {
-        String timeStamp = new SimpleDateFormat("HmmssddMMyyyy").format(new Date());
+        String timeStamp = new SimpleDateFormat("HmmssddMMyyyy", Locale.US).format(new Date());
         String fileName = "JPEG_" + timeStamp + "_";
 
-        File photoFile = FileUtil.getJPEGFile(this, fileName);
+        File photoFile = getJPEGFile(fileName);
 
         if (photoFile != null) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

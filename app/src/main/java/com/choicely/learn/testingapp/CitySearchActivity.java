@@ -39,6 +39,8 @@ public class CitySearchActivity extends AppCompatActivity {
     private AutoCompleteTextView searchBar;
     private String cityFullName;
     private ProgressBar loadingIndicator;
+    private OkHttpClient client;
+    private Request request;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,9 +59,9 @@ public class CitySearchActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 loadingIndicator.setVisibility(View.VISIBLE);
                 createUrlAndAddCitiesToAdapter();
-                //TODO: timing of the loading circle doesn't work properly
-                Handler handler = new Handler();
-                handler.postDelayed(() -> loadingIndicator.setVisibility(View.INVISIBLE), 3000);
+                parseJson();
+                setAdapter();
+                loadingIndicator.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -79,12 +81,14 @@ public class CitySearchActivity extends AppCompatActivity {
                 .build();
         Log.d(TAG, "url: " + url);
 
-        OkHttpClient client = new OkHttpClient();
+        client = new OkHttpClient();
 
-        Request request = new Request.Builder()
+        request = new Request.Builder()
                 .url(url)
                 .build();
+    }
 
+    private void parseJson() {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -99,7 +103,7 @@ public class CitySearchActivity extends AppCompatActivity {
                         JSONObject reader = new JSONObject(jsonString);
                         JSONArray data = reader.getJSONArray(DATA_ROOT_JSON);
 
-                        for(int i = 0; i < data.length(); i++){
+                        for (int i = 0; i < data.length(); i++) {
                             JSONObject jsonObject = data.getJSONObject(i);
                             cityFullName = jsonObject.getString(CITY_FULL_NAME_JSON); //full_name
                             list.add(cityFullName);
@@ -111,7 +115,13 @@ public class CitySearchActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    /**
+     * It's better to make the adapter in to it's own class.
+     * Also recyclerview is usually better here because changing the adapter to be more complex would be easier
+     */
+    private void setAdapter() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, list);
         searchBar.setAdapter(adapter);
     }

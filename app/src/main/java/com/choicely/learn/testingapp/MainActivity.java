@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         switch (v.getId()) {
             default:
             case R.id.main_activity_image_test:
-                intent = new Intent(this, ImageTestActivity.class);
+                intent = new Intent(this, ImageRotationTestActivity.class);
                 startActivity(intent);
                 break;
             case R.id.main_activity_sound_test:
