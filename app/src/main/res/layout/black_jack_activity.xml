@@ -1,6 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/green">
+
+    <TextView
+        android:id="@+id/black_jack_activity_dealer_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Dealer"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/black_jack_activity_player_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Player"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
+    <ImageView
+        android:id="@+id/black_jack_activity_icon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_blackjackicon" />
+
+    <TextView
+        android:id="@+id/black_jack_activity_dealer_cards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/black_jack_activity_dealer_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/black_jack_activity_player_cards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/black_jack_activity_player_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="34dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        tools:text="2" />
+
+    <Button
+        android:id="@+id/black_jack_activity_hit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/black_jack_activity_icon"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="4dp"
+        android:backgroundTint="@color/black"
+        android:text="Hit" />
+
+    <Button
+        android:id="@+id/black_jack_activity_stand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/black_jack_activity_hit"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="4dp"
+        android:backgroundTint="@color/black"
+        android:text="Stand" />
+
+    <Button
+        android:id="@+id/black_jack_activity_surrender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/black"
+        android:layout_below="@id/black_jack_activity_stand"
+        android:layout_marginStart="4dp"
+        android:text="Surrender"
+        android:textSize="12sp"
+        />
+
+    <EditText
+        android:id="@+id/black_jack_activity_set_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/black_jack_activity_stand"
+        android:layout_toStartOf="@id/black_jack_activity_bet"
+        android:hint="€" />
+
+    <Button
+        android:id="@+id/black_jack_activity_bet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/black_jack_activity_set_money"
+        android:backgroundTint="@color/black"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="4dp"
+        android:layout_below="@id/black_jack_activity_stand"
+        android:text="Bet" />
+
+    <Button
+        android:id="@+id/black_jack_activity_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:backgroundTint="@color/red"
+        android:text="Start" />
+
 
 </RelativeLayout>
