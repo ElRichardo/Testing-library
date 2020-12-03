@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.choicely.learn.testingapp.blackjack.BlackJackActivity;
 import com.choicely.learn.testingapp.countdowntimer.CountDownTimerActivity;
 import com.choicely.learn.testingapp.imagegallery.ImageGalleryActivity;
 import com.choicely.learn.testingapp.receiptsave.ReceiptSavingActivity;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private Button randomStrings;
     private Button imageGallery;
     private Button citySearch;
+    private Button blackJack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         countDownBtn = findViewById(R.id.main_activity_count_down);
         randomStrings = findViewById(R.id.main_activity_random_strings);
         citySearch = findViewById(R.id.main_activity_city_search);
+        blackJack = findViewById(R.id.main_activity_black_jack);
 
         createNotificationChannel();
     }
@@ -103,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.main_activity_city_search:
                 intent = new Intent(this, CitySearchActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.main_activity_black_jack:
+                intent = new Intent(this, BlackJackActivity.class);
                 startActivity(intent);
                 break;
         }

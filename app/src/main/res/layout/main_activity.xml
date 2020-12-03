@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/shelf">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -28,6 +28,7 @@
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
+            android:layout_below="@id/main_activity_image_test"
             android:text="Sound testing (Ei toimi jostain syystä)" />
 
         <Button
@@ -38,6 +39,7 @@
             android:layout_marginTop="36dp"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
+            android:layout_below="@id/main_activity_sound_test"
             android:text="Cardview test 1" />
 
         <Button
@@ -48,6 +50,7 @@
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
+            android:layout_below="@id/main_activity_card_view_1"
             android:text="ViewPager2 test" />
 
         <Button
@@ -58,6 +61,7 @@
             android:layout_marginTop="34dp"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
+            android:layout_below="@id/main_activity_view_pager"
             android:text="Send notification" />
 
         <Button
@@ -68,6 +72,7 @@
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
+            android:layout_below="@id/main_activity_notification"
             android:text="Simple adjust test" />
 
         <Button
@@ -78,6 +83,7 @@
             android:layout_marginTop="34dp"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
+            android:layout_below="@id/main_activity_adjust_screen"
             android:text="Receipt saving app" />
 
         <Button
@@ -87,6 +93,7 @@
             android:layout_gravity="center"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
+            android:layout_below="@id/main_activity_receipt_button"
             android:text="Count Down timer" />
 
         <Button
@@ -97,6 +104,7 @@
             android:layout_marginTop="44dp"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
+            android:layout_below="@id/main_activity_count_down"
             android:text="Million random strings" />
 
         <Button
@@ -107,6 +115,7 @@
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
+            android:layout_below="@id/main_activity_random_strings"
             android:text="Image gallery" />
 
         <Button
@@ -116,9 +125,24 @@
             android:layout_gravity="center"
             android:backgroundTint="@color/black"
             android:onClick="onClick"
-            android:text="City Searching"
-            />
+            android:layout_below="@id/main_activity_sound_test"
+            android:layout_alignTop="@id/main_activity_card_view_1"
+            android:layout_toEndOf="@id/main_activity_card_view_1"
+            android:layout_marginStart="34dp"
+            android:text="City Searching" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/main_activity_black_jack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:onClick="onClick"
+            android:layout_below="@id/main_activity_city_search"
+            android:layout_toEndOf="@id/main_activity_view_pager"
+            android:layout_marginStart="34dp"
+            android:layout_alignTop="@id/main_activity_view_pager"
+            android:text="Blackjack" />
+
+    </RelativeLayout>
 
 </ScrollView>

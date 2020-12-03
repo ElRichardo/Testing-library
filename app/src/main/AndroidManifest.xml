@@ -81,6 +81,11 @@
             android:parentActivityName=".MainActivity"
             />
 
+        <activity
+            android:name=".blackjack.BlackJackActivity"
+            android:parentActivityName=".MainActivity"
+            />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
