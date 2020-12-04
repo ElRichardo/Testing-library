@@ -63,6 +63,7 @@
         android:layout_marginStart="4dp"
         android:backgroundTint="@color/black"
         android:enabled="false"
+        android:onClick="onClick"
         android:text="Hit" />
 
     <Button
@@ -72,6 +73,7 @@
         android:layout_below="@id/black_jack_activity_hit"
         android:layout_centerVertical="true"
         android:layout_marginStart="4dp"
+        android:onClick="onClick"
         android:backgroundTint="@color/black"
         android:text="Stand" />
 
@@ -111,7 +113,31 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:backgroundTint="@color/red"
+        android:onClick="onClick"
         android:text="Start" />
+
+    <TextView
+        android:id="@+id/black_jack_activity_dealer_sum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/black_jack_activity_dealer_text"
+        android:layout_marginStart="34dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        tools:text="sum"
+        />
+
+    <TextView
+        android:id="@+id/black_jack_activity_player_sum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/black_jack_activity_player_text"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="34dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        tools:text="sum"
+        />
 
     <TextView
         android:id="@+id/black_jack_activity_lost"
@@ -119,10 +145,20 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="You lost"
-        android:visibility="invisible"
+        android:text="You lost!"
         android:textColor="@color/white"
-        android:textSize="50dp" />
+        android:textSize="50dp"
+        android:visibility="invisible" />
 
+    <TextView
+        android:id="@+id/black_jack_activity_won"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="You won!"
+        android:textColor="@color/white"
+        android:textSize="50dp"
+        android:visibility="invisible" />
 
 </RelativeLayout>
