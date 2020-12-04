@@ -22,8 +22,10 @@ public class BlackJackActivity extends AppCompatActivity {
 
     private static final String TAG = "BlackJackActivity";
     private static final String CARD_FACE_DOWN = "?";
+    private static final int FINAL_NUMBER_21 = 21;
 
     private Random random;
+    private TextView losingText;
     private TextView dealerCards;
     private TextView playerCards;
     private EditText setMoney;
@@ -33,6 +35,7 @@ public class BlackJackActivity extends AppCompatActivity {
     private Button surrenderBtn;
     private Button betBtn;
     private boolean isVisibility = false;
+    private int sum;
 
     private List<Integer> dealerCardList = new ArrayList<>();
     private List<Integer> playerCardList = new ArrayList<>();
@@ -50,6 +53,7 @@ public class BlackJackActivity extends AppCompatActivity {
         surrenderBtn = findViewById(R.id.black_jack_activity_surrender);
         betBtn = findViewById(R.id.black_jack_activity_bet);
         setMoney = findViewById(R.id.black_jack_activity_set_money);
+        losingText = findViewById(R.id.black_jack_activity_lost);
 
         setButtonVisibility();
 
@@ -58,6 +62,7 @@ public class BlackJackActivity extends AppCompatActivity {
             Handler handler = new Handler();
             handler.postDelayed(() -> {
                 startingPosition();
+                hitBtn.setEnabled(true); //I set it disabled first so the user couldn't hit before the starting position is printed
             }, 1500);
 
             isVisibility = true;
@@ -65,14 +70,37 @@ public class BlackJackActivity extends AppCompatActivity {
         });
 
         hitBtn.setOnClickListener(v -> {
-//            int hitCard = random.nextInt(10-1);
-//            playerCardList.add(hitCard);
-//            for(int i = 0; i < playerCardList.size(); i++) {
-//                int everyCard = playerCardList.get(i);
-//                playerCards.setText("\n" + everyCard);
-//                Log.d(TAG, "testi" + everyCard);
-//            }
+            addCard();
+            sumOfArrayList(playerCardList);
+            if(sum > FINAL_NUMBER_21){
+                losingText.setVisibility(View.VISIBLE);
+                isVisibility = false;
+                setButtonVisibility();
+            }
         });
+    }
+
+    private int sumOfArrayList(List<Integer> list) {
+        sum = 0;
+        for(int i : list){
+            sum += i;
+        }
+        Log.d(TAG, "sum: " + sum);
+        return sum;
+    }
+
+    private void addCard() {
+        playerCardList.add(random.nextInt(10-1));
+        StringBuilder builder = new StringBuilder();
+
+        for(int i = 0; i < playerCardList.size(); i++){
+            String everyCard = playerCardList.get(i).toString();
+            builder.append(everyCard + "\t");
+        }
+
+        playerCards.setText(builder.toString());
+        Log.d(TAG, "pelaajan lista: " + playerCardList);
+        Log.d(TAG, "builder: " + builder.toString());
     }
 
     private void startingPosition() {
@@ -85,8 +113,8 @@ public class BlackJackActivity extends AppCompatActivity {
         playerCards.setText(String.format(Locale.getDefault(), "%d\n%d", playerCard1, playerCard2));
 
 //        dealerCardList.add(dealerCard);
-//        playerCardList.add(playerCard1);
-//        playerCardList.add(playerCard2);
+        playerCardList.add(playerCard1);
+        playerCardList.add(playerCard2);
     }
 
     private void setButtonVisibility() {
@@ -95,6 +123,8 @@ public class BlackJackActivity extends AppCompatActivity {
         btnVisibilitySet(surrenderBtn);
         btnVisibilitySet(betBtn);
         btnVisibilitySet(setMoney);
+        btnVisibilitySet(playerCards);
+        btnVisibilitySet(dealerCards);
     }
 
     private void btnVisibilitySet(View view) {
