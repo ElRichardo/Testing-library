@@ -24,7 +24,7 @@ public class BlackJackActivity extends AppCompatActivity {
     private static final int FINAL_NUMBER_21 = 21;
 
     private Random random;
-    private Handler handler;
+    private Handler handler = new Handler();
     private TextView losingText;
     private TextView winningText;
     private TextView dealerCards;
@@ -75,8 +75,7 @@ public class BlackJackActivity extends AppCompatActivity {
             hitAccordingToPlayerRules();
         } else if (v == standBtn) {
             dealerCardsAtStart();
-            //sumOfArrayList(dealerCardList);
-                dealersGame();
+            dealersGame();
         }
     }
 
@@ -84,10 +83,10 @@ public class BlackJackActivity extends AppCompatActivity {
         startBtn.setVisibility(View.GONE);
 
         random = new Random();
-        int dealerCard = random.nextInt(10 - 1);
-        cardFaceDown = random.nextInt(10 - 1);
-        int playerCard1 = random.nextInt(10 - 1);
-        int playerCard2 = random.nextInt(10 - 1);
+        int dealerCard = random.nextInt(10 - 1) + 1;
+        cardFaceDown = random.nextInt(10 - 1) + 1;
+        int playerCard1 = random.nextInt(10 - 1) + 1;
+        int playerCard2 = random.nextInt(10 - 1) + 1;
 
         dealerCards.setText(String.format(Locale.getDefault(), "%s\t%d", "?", dealerCard));
         playerCards.setText(String.format(Locale.getDefault(), "%d\t%d", playerCard1, playerCard2));
@@ -102,10 +101,10 @@ public class BlackJackActivity extends AppCompatActivity {
         isVisibility = true;
         setButtonVisibility();
 
-        sumOfArrayList(playerCardList);
+        updateListSum(playerCardList);
     }
 
-    private int sumOfArrayList(List<Integer> list) {
+    private int updateListSum(List<Integer> list) {
         sum = 0;
         for (int i : list) {
             sum += i;
@@ -123,7 +122,7 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void addCardTo(List<Integer> list) {
-        list.add(random.nextInt(10 - 1));
+        list.add(random.nextInt(10 - 1) + 1);
         StringBuilder builder = new StringBuilder();
 
         for (int i = 0; i < list.size(); i++) {
@@ -140,14 +139,14 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void hitAccordingToPlayerRules() {
-        sumOfArrayList(playerCardList);
+        updateListSum(playerCardList);
         if (playerSum > FINAL_NUMBER_21) {
             playerLose();
         } else if (playerSum == FINAL_NUMBER_21) {
             dealersGame();
         } else if (playerSum < FINAL_NUMBER_21) {
             addCardTo(playerCardList);
-            sumOfArrayList(playerCardList);
+            updateListSum(playerCardList);
         }
     }
 
@@ -163,18 +162,15 @@ public class BlackJackActivity extends AppCompatActivity {
 
     private void dealersGame() {
         Log.d(TAG, "dealersGame: ");
-        sumOfArrayList(dealerCardList);
-        while (dealerSum < 17) {
-            handler = new Handler();
-            handler.postDelayed(() -> {
-                addCardTo(dealerCardList);
-                sumOfArrayList(dealerCardList);
-                Log.d(TAG, "dealerSum while: " + dealerSum);
-            }, 3000);
-        } //else {
+        updateListSum(dealerCardList);
+        if (dealerSum < 17) {
+            addCardTo(dealerCardList);
+            updateListSum(dealerCardList);
+            handler.postDelayed(this::dealersGame, 2000);
+        } else {
             //dealer must stand
             compareHands();
-        //}
+        }
     }
 
     private void compareHands() {

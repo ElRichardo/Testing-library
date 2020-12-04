@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:text="Dealer"
         android:textColor="@color/black"
-        android:textSize="24sp" />
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/black_jack_activity_player_text"
@@ -22,7 +22,7 @@
         android:layout_centerHorizontal="true"
         android:text="Player"
         android:textColor="@color/black"
-        android:textSize="24sp" />
+        android:textSize="30sp" />
 
     <ImageView
         android:id="@+id/black_jack_activity_icon"
@@ -123,7 +123,7 @@
         android:layout_toEndOf="@id/black_jack_activity_dealer_text"
         android:layout_marginStart="34dp"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="20sp"
         tools:text="sum"
         />
 
@@ -135,7 +135,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="34dp"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="20sp"
         tools:text="sum"
         />
 
