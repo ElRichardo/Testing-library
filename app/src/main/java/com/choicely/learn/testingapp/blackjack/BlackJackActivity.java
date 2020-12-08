@@ -1,5 +1,6 @@
 package com.choicely.learn.testingapp.blackjack;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -27,17 +28,22 @@ public class BlackJackActivity extends AppCompatActivity {
     private Handler handler = new Handler();
     private TextView losingText;
     private TextView winningText;
+    private TextView drawText;
     private TextView dealerCards;
     private TextView playerCards;
     private TextView playerSumText;
     private TextView dealerSumText;
+    private TextView playerTitleText;
+    private TextView dealerTitleText;
     private EditText setMoney;
-    private Button startBtn;
+    private Button newGameBtn;
     private Button hitBtn;
     private Button standBtn;
     private Button surrenderBtn;
     private Button betBtn;
     private boolean isVisibility = false;
+    private boolean isPlayerActive;
+    private boolean isDealerActive;
     private int sum;
     private int playerSum;
     private int dealerSum;
@@ -53,7 +59,7 @@ public class BlackJackActivity extends AppCompatActivity {
 
         dealerCards = findViewById(R.id.black_jack_activity_dealer_cards);
         playerCards = findViewById(R.id.black_jack_activity_player_cards);
-        startBtn = findViewById(R.id.black_jack_activity_start);
+        newGameBtn = findViewById(R.id.black_jack_activity_new_game);
         hitBtn = findViewById(R.id.black_jack_activity_hit);
         standBtn = findViewById(R.id.black_jack_activity_stand);
         surrenderBtn = findViewById(R.id.black_jack_activity_surrender);
@@ -61,26 +67,59 @@ public class BlackJackActivity extends AppCompatActivity {
         setMoney = findViewById(R.id.black_jack_activity_set_money);
         losingText = findViewById(R.id.black_jack_activity_lost);
         winningText = findViewById(R.id.black_jack_activity_won);
+        drawText = findViewById(R.id.black_jack_activity_draw);
         playerSumText = findViewById(R.id.black_jack_activity_player_sum);
         dealerSumText = findViewById(R.id.black_jack_activity_dealer_sum);
+        playerTitleText = findViewById(R.id.black_jack_activity_player_text);
+        dealerTitleText = findViewById(R.id.black_jack_activity_dealer_text);
 
-        setButtonVisibility();
+        setViewVisibility();
     }
 
     //switch case is not used because it'll be deprecated in the upcoming android update
     public void onClick(View v) {
-        if (v == startBtn) {
+        if (v == newGameBtn) {
+            isPlayerActive = true;
+            isDealerActive = false;
+            setActivity();
+
+            losingText.setVisibility(View.INVISIBLE);
+            winningText.setVisibility(View.INVISIBLE);
+            drawText.setVisibility(View.INVISIBLE);
+
             gameStart();
         } else if (v == hitBtn) {
-            hitAccordingToPlayerRules();
+            hit();
         } else if (v == standBtn) {
+            isPlayerActive = false;
+            isDealerActive = true;
+            setActivity();
+
             dealerCardsAtStart();
-            dealersGame();
+            handler.postDelayed(this::dealersGameAccordingToRules, 2000);
+        }
+    }
+
+    private void setActivity() {
+        if (isPlayerActive) {
+            playerTitleText.setTextColor(Color.RED);
+            playerSumText.setTextColor(Color.RED);
+        } else if (isDealerActive) {
+            playerTitleText.setTextColor(Color.BLACK);
+            dealerTitleText.setTextColor(Color.RED);
+            dealerSumText.setTextColor(Color.RED);
+        } else {
+            playerTitleText.setTextColor(Color.BLACK);
+            dealerTitleText.setTextColor(Color.BLACK);
+            playerSumText.setTextColor(Color.BLACK);
+            dealerSumText.setTextColor(Color.BLACK);
         }
     }
 
     private void gameStart() {
-        startBtn.setVisibility(View.GONE);
+        dealerCardList.clear();
+        playerCardList.clear();
+        newGameBtn.setVisibility(View.GONE);
 
         random = new Random();
         int dealerCard = random.nextInt(10 - 1) + 1;
@@ -88,23 +127,24 @@ public class BlackJackActivity extends AppCompatActivity {
         int playerCard1 = random.nextInt(10 - 1) + 1;
         int playerCard2 = random.nextInt(10 - 1) + 1;
 
-        dealerCards.setText(String.format(Locale.getDefault(), "%s\t%d", "?", dealerCard));
+        dealerCards.setText(String.format(Locale.getDefault(), "%d\t%s", dealerCard, "?"));
         playerCards.setText(String.format(Locale.getDefault(), "%d\t%d", playerCard1, playerCard2));
 
-        dealerCardList.add(cardFaceDown);
+        //putting updateListSum here might be an ugly solution
         dealerCardList.add(dealerCard);
+        updateListSum(dealerCardList);
+        dealerCardList.add(cardFaceDown);
+
         playerCardList.add(playerCard1);
         playerCardList.add(playerCard2);
 
-        hitBtn.setEnabled(true); //I set it disabled first so the user couldn't hit before the starting position is printed
-
         isVisibility = true;
-        setButtonVisibility();
+        setViewVisibility();
 
         updateListSum(playerCardList);
     }
 
-    private int updateListSum(List<Integer> list) {
+    private void updateListSum(List<Integer> list) {
         sum = 0;
         for (int i : list) {
             sum += i;
@@ -113,12 +153,10 @@ public class BlackJackActivity extends AppCompatActivity {
             playerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", sum));
             playerSum = sum;
             Log.d(TAG, "sumOfArrayList: " + playerSum);
-
         } else {
             dealerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", sum));
             dealerSum = sum;
         }
-        return sum;
     }
 
     private void addCardTo(List<Integer> list) {
@@ -138,14 +176,20 @@ public class BlackJackActivity extends AppCompatActivity {
         Log.d(TAG, "list: " + list);
     }
 
-    private void hitAccordingToPlayerRules() {
+    private void hit() {
+        addCardTo(playerCardList);
         updateListSum(playerCardList);
+        playerRules();
+    }
+
+    private void playerRules() {
         if (playerSum > FINAL_NUMBER_21) {
+            Log.d(TAG, "playerSum: " + playerSum);
             playerLose();
         } else if (playerSum == FINAL_NUMBER_21) {
-            dealersGame();
-        } else if (playerSum < FINAL_NUMBER_21) {
-            addCardTo(playerCardList);
+            Log.d(TAG, "playerSum: " + playerSum);
+            hitBtn.setVisibility(View.INVISIBLE);
+            dealersGameAccordingToRules();
             updateListSum(playerCardList);
         }
     }
@@ -158,52 +202,67 @@ public class BlackJackActivity extends AppCompatActivity {
             builder.append(everyCard + "\t");
         }
         dealerCards.setText(builder.toString());
+        updateListSum(dealerCardList);
     }
 
-    private void dealersGame() {
-        Log.d(TAG, "dealersGame: ");
-        updateListSum(dealerCardList);
+    private void dealersGameAccordingToRules() {
         if (dealerSum < 17) {
             addCardTo(dealerCardList);
             updateListSum(dealerCardList);
-            handler.postDelayed(this::dealersGame, 2000);
+            handler.postDelayed(this::dealersGameAccordingToRules, 2000);
+        } else if (dealerSum > FINAL_NUMBER_21) {
+            playerWin();
         } else {
             //dealer must stand
-            compareHands();
+            handler.postDelayed(this::compareHands, 1000);
         }
     }
 
     private void compareHands() {
         if (playerSum > dealerSum) {
             playerWin();
+        } else if (playerSum == dealerSum) {
+            GameDraw();
         } else {
             playerLose();
         }
     }
 
+    private void GameDraw() {
+        gameEnd(drawText);
+    }
+
     private void playerWin() {
-        winningText.setVisibility(View.VISIBLE);
-        isVisibility = false;
-        setButtonVisibility();
+        gameEnd(winningText);
     }
 
     private void playerLose() {
-        losingText.setVisibility(View.VISIBLE);
+        gameEnd(losingText);
+    }
+
+    private void gameEnd(View view) {
+        isPlayerActive = false;
+        isDealerActive = false;
+        setActivity();
+
+        view.setVisibility(View.VISIBLE);
         isVisibility = false;
-        setButtonVisibility();
+        setViewVisibility();
+
+        newGameBtn.setVisibility(View.VISIBLE);
     }
 
-    private void setButtonVisibility() {
-        btnVisibilitySet(hitBtn);
-        btnVisibilitySet(standBtn);
-        btnVisibilitySet(surrenderBtn);
-        btnVisibilitySet(betBtn);
-        btnVisibilitySet(setMoney);
-        btnVisibilitySet(playerCards);
-        btnVisibilitySet(dealerCards);
+    private void setViewVisibility() {
+        viewVisibilitySet(hitBtn);
+        viewVisibilitySet(standBtn);
+        viewVisibilitySet(surrenderBtn);
+        viewVisibilitySet(betBtn);
+        viewVisibilitySet(setMoney);
+        viewVisibilitySet(playerCards);
+        viewVisibilitySet(dealerCards);
     }
 
-    private void btnVisibilitySet(View view) {
+    private void viewVisibilitySet(View view) {
         if (!isVisibility) {
             view.setVisibility(View.INVISIBLE);
         } else {
