@@ -24,8 +24,8 @@ public class BlackJackActivity extends AppCompatActivity {
     private static final String TAG = "BlackJackActivity";
     private static final int FINAL_NUMBER_21 = 21;
 
+    private final Handler handler = new Handler();
     private Random random;
-    private Handler handler = new Handler();
     private TextView losingText;
     private TextView winningText;
     private TextView drawText;
@@ -44,13 +44,12 @@ public class BlackJackActivity extends AppCompatActivity {
     private boolean isVisibility = false;
     private boolean isPlayerActive;
     private boolean isDealerActive;
-    private int sum;
+    private boolean isStandAndHitActive;
     private int playerSum;
     private int dealerSum;
-    private int cardFaceDown;
 
-    private List<Integer> dealerCardList = new ArrayList<>();
-    private List<Integer> playerCardList = new ArrayList<>();
+    private final List<Integer> dealerCardList = new ArrayList<>();
+    private final List<Integer> playerCardList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,41 +78,27 @@ public class BlackJackActivity extends AppCompatActivity {
     //switch case is not used because it'll be deprecated in the upcoming android update
     public void onClick(View v) {
         if (v == newGameBtn) {
-            isPlayerActive = true;
-            isDealerActive = false;
-            setActivity();
-
-            losingText.setVisibility(View.INVISIBLE);
-            winningText.setVisibility(View.INVISIBLE);
-            drawText.setVisibility(View.INVISIBLE);
-
-            gameStart();
+            newGame();
         } else if (v == hitBtn) {
             hit();
         } else if (v == standBtn) {
-            isPlayerActive = false;
-            isDealerActive = true;
-            setActivity();
-
-            dealerCardsAtStart();
-            handler.postDelayed(this::dealersGameAccordingToRules, 2000);
+            stand();
         }
     }
 
-    private void setActivity() {
-        if (isPlayerActive) {
-            playerTitleText.setTextColor(Color.RED);
-            playerSumText.setTextColor(Color.RED);
-        } else if (isDealerActive) {
-            playerTitleText.setTextColor(Color.BLACK);
-            dealerTitleText.setTextColor(Color.RED);
-            dealerSumText.setTextColor(Color.RED);
-        } else {
-            playerTitleText.setTextColor(Color.BLACK);
-            dealerTitleText.setTextColor(Color.BLACK);
-            playerSumText.setTextColor(Color.BLACK);
-            dealerSumText.setTextColor(Color.BLACK);
-        }
+    private void newGame() {
+        isStandAndHitActive = true;
+        StandAndHitActivity();
+
+        isPlayerActive = true;
+        isDealerActive = false;
+        setActivity();
+
+        losingText.setVisibility(View.INVISIBLE);
+        winningText.setVisibility(View.INVISIBLE);
+        drawText.setVisibility(View.INVISIBLE);
+
+        gameStart();
     }
 
     private void gameStart() {
@@ -123,7 +108,7 @@ public class BlackJackActivity extends AppCompatActivity {
 
         random = new Random();
         int dealerCard = random.nextInt(10 - 1) + 1;
-        cardFaceDown = random.nextInt(10 - 1) + 1;
+        int cardFaceDown = random.nextInt(10 - 1) + 1;
         int playerCard1 = random.nextInt(10 - 1) + 1;
         int playerCard2 = random.nextInt(10 - 1) + 1;
 
@@ -145,7 +130,7 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void updateListSum(List<Integer> list) {
-        sum = 0;
+        int sum = 0;
         for (int i : list) {
             sum += i;
         }
@@ -157,6 +142,12 @@ public class BlackJackActivity extends AppCompatActivity {
             dealerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", sum));
             dealerSum = sum;
         }
+    }
+
+    private void hit() {
+        addCardTo(playerCardList);
+        updateListSum(playerCardList);
+        playerRules();
     }
 
     private void addCardTo(List<Integer> list) {
@@ -176,22 +167,25 @@ public class BlackJackActivity extends AppCompatActivity {
         Log.d(TAG, "list: " + list);
     }
 
-    private void hit() {
-        addCardTo(playerCardList);
-        updateListSum(playerCardList);
-        playerRules();
-    }
-
     private void playerRules() {
         if (playerSum > FINAL_NUMBER_21) {
-            Log.d(TAG, "playerSum: " + playerSum);
             playerLose();
         } else if (playerSum == FINAL_NUMBER_21) {
-            Log.d(TAG, "playerSum: " + playerSum);
-            hitBtn.setVisibility(View.INVISIBLE);
-            dealersGameAccordingToRules();
+            stand();
             updateListSum(playerCardList);
         }
+    }
+
+    private void stand() {
+        isStandAndHitActive = false;
+        StandAndHitActivity();
+
+        isPlayerActive = false;
+        isDealerActive = true;
+        setActivity();
+
+        dealerCardsAtStart();
+        handler.postDelayed(this::dealersGameAccordingToRules, 2000);
     }
 
     private void dealerCardsAtStart() {
@@ -211,7 +205,7 @@ public class BlackJackActivity extends AppCompatActivity {
             updateListSum(dealerCardList);
             handler.postDelayed(this::dealersGameAccordingToRules, 2000);
         } else if (dealerSum > FINAL_NUMBER_21) {
-            playerWin();
+            handler.postDelayed(this::playerWin, 1000);
         } else {
             //dealer must stand
             handler.postDelayed(this::compareHands, 1000);
@@ -250,6 +244,38 @@ public class BlackJackActivity extends AppCompatActivity {
         setViewVisibility();
 
         newGameBtn.setVisibility(View.VISIBLE);
+    }
+
+    private void StandAndHitActivity() {
+        if(!isStandAndHitActive) {
+            hitBtn.setClickable(false);
+            standBtn.setClickable(false);
+
+            hitBtn.setBackgroundColor(Color.GRAY);
+            standBtn.setBackgroundColor(Color.GRAY);
+        } else{
+            hitBtn.setClickable(true);
+            standBtn.setClickable(true);
+
+            hitBtn.setBackgroundColor(Color.BLACK);
+            standBtn.setBackgroundColor(Color.BLACK);
+        }
+    }
+
+    private void setActivity() {
+        if (isPlayerActive) {
+            playerTitleText.setTextColor(Color.RED);
+            playerSumText.setTextColor(Color.RED);
+        } else if (isDealerActive) {
+            playerTitleText.setTextColor(Color.BLACK);
+            dealerTitleText.setTextColor(Color.RED);
+            dealerSumText.setTextColor(Color.RED);
+        } else {
+            playerTitleText.setTextColor(Color.BLACK);
+            dealerTitleText.setTextColor(Color.BLACK);
+            playerSumText.setTextColor(Color.BLACK);
+            dealerSumText.setTextColor(Color.BLACK);
+        }
     }
 
     private void setViewVisibility() {
