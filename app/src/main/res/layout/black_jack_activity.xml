@@ -103,7 +103,32 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="4dp"
         android:backgroundTint="@color/black"
+        android:onClick="onClick"
         android:text="Bet" />
+
+    <TextView
+        android:id="@+id/black_jack_activity_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/black_jack_activity_money_bet_text"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        tools:text="2000€" />
+
+    <TextView
+        android:id="@+id/black_jack_activity_money_bet_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/black_jack_activity_bet"
+        android:layout_alignBottom="@id/black_jack_activity_stand"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="4dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        tools:text="100 " />
 
     <Button
         android:id="@+id/black_jack_activity_new_game"

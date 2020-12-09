@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,7 @@ public class BlackJackActivity extends AppCompatActivity {
 
     private static final String TAG = "BlackJackActivity";
     private static final int FINAL_NUMBER_21 = 21;
+    private static final int BALANCE_AT_START = 500;
 
     private final Handler handler = new Handler();
     private Random random;
@@ -35,6 +37,8 @@ public class BlackJackActivity extends AppCompatActivity {
     private TextView dealerSumText;
     private TextView playerTitleText;
     private TextView dealerTitleText;
+    private TextView moneyBetText;
+    private TextView balance;
     private EditText setMoney;
     private Button newGameBtn;
     private Button hitBtn;
@@ -47,9 +51,13 @@ public class BlackJackActivity extends AppCompatActivity {
     private boolean isStandAndHitActive;
     private int playerSum;
     private int dealerSum;
+    private int currentBalance;
+    private int amountOfMoneyBet;
+    private int balanceAndBetDiff;
 
     private final List<Integer> dealerCardList = new ArrayList<>();
     private final List<Integer> playerCardList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +71,8 @@ public class BlackJackActivity extends AppCompatActivity {
         standBtn = findViewById(R.id.black_jack_activity_stand);
         surrenderBtn = findViewById(R.id.black_jack_activity_surrender);
         betBtn = findViewById(R.id.black_jack_activity_bet);
+        moneyBetText = findViewById(R.id.black_jack_activity_money_bet_text);
+        balance = findViewById(R.id.black_jack_activity_balance);
         setMoney = findViewById(R.id.black_jack_activity_set_money);
         losingText = findViewById(R.id.black_jack_activity_lost);
         winningText = findViewById(R.id.black_jack_activity_won);
@@ -73,16 +83,35 @@ public class BlackJackActivity extends AppCompatActivity {
         dealerTitleText = findViewById(R.id.black_jack_activity_dealer_text);
 
         setViewVisibility();
+
+        currentBalance = BALANCE_AT_START;
     }
 
     //switch case is not used because it'll be deprecated in the upcoming android update
     public void onClick(View v) {
         if (v == newGameBtn) {
             newGame();
+            balance.setText(currentBalance + "€");
         } else if (v == hitBtn) {
             hit();
         } else if (v == standBtn) {
             stand();
+        } else if(v == betBtn){
+            if(setMoney.getText().toString().length() > 0) {
+                Log.d(TAG, "amount of Money: " + amountOfMoneyBet);
+                amountOfMoneyBet = Integer.parseInt(setMoney.getText().toString());
+
+                if(currentBalance > amountOfMoneyBet) {
+                    balanceAndBetDiff = (currentBalance - amountOfMoneyBet);
+                    balance.setText(balanceAndBetDiff + "€");
+                } else {
+                    Toast toast = Toast.makeText(this, "You don't have enough money!", Toast.LENGTH_SHORT);
+                    View toastView = toast.getView();
+                    toastView.setBackgroundResource(R.color.light_blue_A200);
+                    toast.show();
+                }
+            }
+            //updateBalance();
         }
     }
 
@@ -137,7 +166,6 @@ public class BlackJackActivity extends AppCompatActivity {
         if (list == playerCardList) {
             playerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", sum));
             playerSum = sum;
-            Log.d(TAG, "sumOfArrayList: " + playerSum);
         } else {
             dealerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", sum));
             dealerSum = sum;
@@ -164,7 +192,6 @@ public class BlackJackActivity extends AppCompatActivity {
         } else {
             dealerCards.setText(builder.toString());
         }
-        Log.d(TAG, "list: " + list);
     }
 
     private void playerRules() {
@@ -223,14 +250,19 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void GameDraw() {
+        setMoney.setText(null);
         gameEnd(drawText);
     }
 
     private void playerWin() {
+        currentBalance += amountOfMoneyBet;
+        setMoney.setText(null);
         gameEnd(winningText);
     }
 
     private void playerLose() {
+        currentBalance = balanceAndBetDiff;
+        setMoney.setText(null);
         gameEnd(losingText);
     }
 
@@ -283,6 +315,8 @@ public class BlackJackActivity extends AppCompatActivity {
         viewVisibilitySet(standBtn);
         viewVisibilitySet(surrenderBtn);
         viewVisibilitySet(betBtn);
+        viewVisibilitySet(moneyBetText);
+        viewVisibilitySet(balance);
         viewVisibilitySet(setMoney);
         viewVisibilitySet(playerCards);
         viewVisibilitySet(dealerCards);
