@@ -23,15 +23,20 @@ import java.util.Random;
 public class BlackJackActivity extends AppCompatActivity {
 
     private static final String TAG = "BlackJackActivity";
-    private static final int FINAL_NUMBER_21 = 21;
+    static final int FINAL_NUMBER_21 = 21;
     private static final int BALANCE_AT_START = 500;
 
-    private final Handler handler = new Handler();
+    final Handler handler = new Handler();
+    DealersGame dealersGame = new DealersGame();
+    final List<Integer> dealerCardList = new ArrayList<>();
+    private final List<Integer> playerCardList = new ArrayList<>();
+
     private Random random;
+    private TextView surrenderText;
     private TextView losingText;
     private TextView winningText;
     private TextView drawText;
-    private TextView dealerCards;
+    TextView dealerCards;
     private TextView playerCards;
     private TextView playerSumText;
     private TextView dealerSumText;
@@ -46,18 +51,14 @@ public class BlackJackActivity extends AppCompatActivity {
     private Button surrenderBtn;
     private Button betBtn;
     private boolean isVisibility = false;
-    private boolean isPlayerActive;
-    private boolean isDealerActive;
-    private boolean isStandAndHitActive;
+    boolean isPlayerActive;
+    boolean isDealerActive;
+    boolean isButtonsActive;
     private int playerSum;
-    private int dealerSum;
+    int dealerSum;
     private int currentBalance;
     private int amountOfMoneyBet;
     private int balanceAndBetDiff;
-
-    private final List<Integer> dealerCardList = new ArrayList<>();
-    private final List<Integer> playerCardList = new ArrayList<>();
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +75,7 @@ public class BlackJackActivity extends AppCompatActivity {
         moneyBetText = findViewById(R.id.black_jack_activity_money_bet_text);
         balance = findViewById(R.id.black_jack_activity_balance);
         setMoney = findViewById(R.id.black_jack_activity_set_money);
+        surrenderText = findViewById(R.id.black_jack_activity_surrender_text);
         losingText = findViewById(R.id.black_jack_activity_lost);
         winningText = findViewById(R.id.black_jack_activity_won);
         drawText = findViewById(R.id.black_jack_activity_draw);
@@ -95,29 +97,20 @@ public class BlackJackActivity extends AppCompatActivity {
         } else if (v == hitBtn) {
             hit();
         } else if (v == standBtn) {
-            stand();
-        } else if(v == betBtn){
-            if(setMoney.getText().toString().length() > 0) {
-                Log.d(TAG, "amount of Money: " + amountOfMoneyBet);
-                amountOfMoneyBet = Integer.parseInt(setMoney.getText().toString());
+            dealersGame.stand();
+        } else if (v == betBtn) {
+            moneyBetting();
 
-                if(currentBalance > amountOfMoneyBet) {
-                    balanceAndBetDiff = (currentBalance - amountOfMoneyBet);
-                    balance.setText(balanceAndBetDiff + "€");
-                } else {
-                    Toast toast = Toast.makeText(this, "You don't have enough money!", Toast.LENGTH_SHORT);
-                    View toastView = toast.getView();
-                    toastView.setBackgroundResource(R.color.light_blue_A200);
-                    toast.show();
-                }
-            }
-            //updateBalance();
+            isButtonsActive = true;
+            buttonActivity();
+        } else if (v == surrenderBtn) {
+            surrender();
         }
     }
 
     private void newGame() {
-        isStandAndHitActive = true;
-        StandAndHitActivity();
+        isButtonsActive = false;
+        buttonActivity();
 
         isPlayerActive = true;
         isDealerActive = false;
@@ -126,6 +119,7 @@ public class BlackJackActivity extends AppCompatActivity {
         losingText.setVisibility(View.INVISIBLE);
         winningText.setVisibility(View.INVISIBLE);
         drawText.setVisibility(View.INVISIBLE);
+        surrenderText.setVisibility(View.INVISIBLE);
 
         gameStart();
     }
@@ -158,7 +152,7 @@ public class BlackJackActivity extends AppCompatActivity {
         updateListSum(playerCardList);
     }
 
-    private void updateListSum(List<Integer> list) {
+    void updateListSum(List<Integer> list) {
         int sum = 0;
         for (int i : list) {
             sum += i;
@@ -178,7 +172,7 @@ public class BlackJackActivity extends AppCompatActivity {
         playerRules();
     }
 
-    private void addCardTo(List<Integer> list) {
+    void addCardTo(List<Integer> list) {
         list.add(random.nextInt(10 - 1) + 1);
         StringBuilder builder = new StringBuilder();
 
@@ -198,63 +192,87 @@ public class BlackJackActivity extends AppCompatActivity {
         if (playerSum > FINAL_NUMBER_21) {
             playerLose();
         } else if (playerSum == FINAL_NUMBER_21) {
-            stand();
+            dealersGame.stand();
             updateListSum(playerCardList);
         }
     }
 
-    private void stand() {
-        isStandAndHitActive = false;
-        StandAndHitActivity();
+//    private void stand() {
+//        isButtonsActive = false;
+//        buttonActivity();
+//
+//        isPlayerActive = false;
+//        isDealerActive = true;
+//        setActivity();
+//
+//        dealerCardsAtStart();
+//        handler.postDelayed(this::dealersGameAccordingToRules, 2000);
+//    }
+//
+//    private void dealerCardsAtStart() {
+//        StringBuilder builder = new StringBuilder();
+//
+//        for (int i = 0; i < dealerCardList.size(); i++) {
+//            String everyCard = dealerCardList.get(i).toString();
+//            builder.append(everyCard + "\t");
+//        }
+//        dealerCards.setText(builder.toString());
+//        updateListSum(dealerCardList);
+//    }
+//
+//    private void dealersGameAccordingToRules() {
+//        if (dealerSum < 17) {
+//            addCardTo(dealerCardList);
+//            updateListSum(dealerCardList);
+//            handler.postDelayed(this::dealersGameAccordingToRules, 2000);
+//        } else if (dealerSum > FINAL_NUMBER_21) {
+//            handler.postDelayed(this::playerWin, 1000);
+//        } else {
+//            //dealer must stand
+//            handler.postDelayed(this::compareHands, 1000);
+//        }
+//    }
 
-        isPlayerActive = false;
-        isDealerActive = true;
-        setActivity();
-
-        dealerCardsAtStart();
-        handler.postDelayed(this::dealersGameAccordingToRules, 2000);
-    }
-
-    private void dealerCardsAtStart() {
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 0; i < dealerCardList.size(); i++) {
-            String everyCard = dealerCardList.get(i).toString();
-            builder.append(everyCard + "\t");
-        }
-        dealerCards.setText(builder.toString());
-        updateListSum(dealerCardList);
-    }
-
-    private void dealersGameAccordingToRules() {
-        if (dealerSum < 17) {
-            addCardTo(dealerCardList);
-            updateListSum(dealerCardList);
-            handler.postDelayed(this::dealersGameAccordingToRules, 2000);
-        } else if (dealerSum > FINAL_NUMBER_21) {
-            handler.postDelayed(this::playerWin, 1000);
-        } else {
-            //dealer must stand
-            handler.postDelayed(this::compareHands, 1000);
-        }
-    }
-
-    private void compareHands() {
+    void compareHands() {
         if (playerSum > dealerSum) {
             playerWin();
         } else if (playerSum == dealerSum) {
-            GameDraw();
+            gameDraw();
         } else {
             playerLose();
         }
     }
 
-    private void GameDraw() {
+    private void moneyBetting() {
+        if (setMoney.getText().toString().length() > 0) {
+            amountOfMoneyBet = Integer.parseInt(setMoney.getText().toString());
+            Log.d(TAG, "amount of Money: " + amountOfMoneyBet);
+
+            if (currentBalance > amountOfMoneyBet) {
+                balanceAndBetDiff = (currentBalance - amountOfMoneyBet);
+                balance.setText(balanceAndBetDiff + "€");
+            } else {
+                Toast toast = Toast.makeText(this, "You don't have enough money!", Toast.LENGTH_SHORT);
+                View toastView = toast.getView();
+                toastView.setBackgroundResource(R.color.light_blue_A200);
+                toast.show();
+            }
+        }
+    }
+
+    private void surrender() {
+        setMoney.setText(null);
+        int halfOfTheMoney = amountOfMoneyBet / 2;
+        currentBalance -= halfOfTheMoney;
+        gameEnd(surrenderText);
+    }
+
+    void gameDraw() {
         setMoney.setText(null);
         gameEnd(drawText);
     }
 
-    private void playerWin() {
+    void playerWin() {
         currentBalance += amountOfMoneyBet;
         setMoney.setText(null);
         gameEnd(winningText);
@@ -278,28 +296,33 @@ public class BlackJackActivity extends AppCompatActivity {
         newGameBtn.setVisibility(View.VISIBLE);
     }
 
-    private void StandAndHitActivity() {
-        if(!isStandAndHitActive) {
+    void buttonActivity() {
+        if (!isButtonsActive) {
             hitBtn.setClickable(false);
             standBtn.setClickable(false);
+            surrenderBtn.setClickable(false);
 
             hitBtn.setBackgroundColor(Color.GRAY);
             standBtn.setBackgroundColor(Color.GRAY);
-        } else{
+            surrenderBtn.setBackgroundColor(Color.GRAY);
+        } else {
             hitBtn.setClickable(true);
             standBtn.setClickable(true);
+            surrenderBtn.setClickable(true);
 
             hitBtn.setBackgroundColor(Color.BLACK);
             standBtn.setBackgroundColor(Color.BLACK);
+            surrenderBtn.setBackgroundColor(Color.BLACK);
         }
     }
 
-    private void setActivity() {
+    void setActivity() {
         if (isPlayerActive) {
             playerTitleText.setTextColor(Color.RED);
             playerSumText.setTextColor(Color.RED);
         } else if (isDealerActive) {
             playerTitleText.setTextColor(Color.BLACK);
+            playerSumText.setTextColor(Color.BLACK);
             dealerTitleText.setTextColor(Color.RED);
             dealerSumText.setTextColor(Color.RED);
         } else {
