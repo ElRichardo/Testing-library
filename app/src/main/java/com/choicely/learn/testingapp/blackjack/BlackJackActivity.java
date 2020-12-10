@@ -27,7 +27,6 @@ public class BlackJackActivity extends AppCompatActivity {
     private static final int BALANCE_AT_START = 500;
 
     final Handler handler = new Handler();
-    DealersGame dealersGame;
     final List<Integer> dealerCardList = new ArrayList<>();
     private final List<Integer> playerCardList = new ArrayList<>();
 
@@ -50,7 +49,7 @@ public class BlackJackActivity extends AppCompatActivity {
     private Button standBtn;
     private Button surrenderBtn;
     private Button betBtn;
-    private boolean isVisibility = false;
+    private boolean isGameRunning = false;
     boolean isPlayerActive;
     boolean isDealerActive;
     boolean isButtonsActive;
@@ -97,7 +96,7 @@ public class BlackJackActivity extends AppCompatActivity {
         } else if (v == hitBtn) {
             hit();
         } else if (v == standBtn) {
-            dealersGame.stand();
+            stand();
         } else if (v == betBtn) {
             moneyBetting();
 
@@ -146,7 +145,7 @@ public class BlackJackActivity extends AppCompatActivity {
         playerCardList.add(playerCard1);
         playerCardList.add(playerCard2);
 
-        isVisibility = true;
+        isGameRunning = true;
         setViewVisibility();
 
         updateListSum(playerCardList);
@@ -192,46 +191,46 @@ public class BlackJackActivity extends AppCompatActivity {
         if (playerSum > FINAL_NUMBER_21) {
             playerLose();
         } else if (playerSum == FINAL_NUMBER_21) {
-            dealersGame.stand();
+            stand();
             updateListSum(playerCardList);
         }
     }
 
-//    private void stand() {
-//        isButtonsActive = false;
-//        buttonActivity();
-//
-//        isPlayerActive = false;
-//        isDealerActive = true;
-//        setActivity();
-//
-//        dealerCardsAtStart();
-//        handler.postDelayed(this::dealersGameAccordingToRules, 2000);
-//    }
-//
-//    private void dealerCardsAtStart() {
-//        StringBuilder builder = new StringBuilder();
-//
-//        for (int i = 0; i < dealerCardList.size(); i++) {
-//            String everyCard = dealerCardList.get(i).toString();
-//            builder.append(everyCard + "\t");
-//        }
-//        dealerCards.setText(builder.toString());
-//        updateListSum(dealerCardList);
-//    }
-//
-//    private void dealersGameAccordingToRules() {
-//        if (dealerSum < 17) {
-//            addCardTo(dealerCardList);
-//            updateListSum(dealerCardList);
-//            handler.postDelayed(this::dealersGameAccordingToRules, 2000);
-//        } else if (dealerSum > FINAL_NUMBER_21) {
-//            handler.postDelayed(this::playerWin, 1000);
-//        } else {
-//            //dealer must stand
-//            handler.postDelayed(this::compareHands, 1000);
-//        }
-//    }
+    private void stand() {
+        isButtonsActive = false;
+        buttonActivity();
+
+        isPlayerActive = false;
+        isDealerActive = true;
+        setActivity();
+
+        dealerCardsAtStart();
+        handler.postDelayed(this::dealersGameAccordingToRules, 2000);
+    }
+
+    private void dealerCardsAtStart() {
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 0; i < dealerCardList.size(); i++) {
+            String everyCard = dealerCardList.get(i).toString();
+            builder.append(everyCard + "\t");
+        }
+        dealerCards.setText(builder.toString());
+        updateListSum(dealerCardList);
+    }
+
+    private void dealersGameAccordingToRules() {
+        if (dealerSum < 17) {
+            addCardTo(dealerCardList);
+            updateListSum(dealerCardList);
+            handler.postDelayed(this::dealersGameAccordingToRules, 2000);
+        } else if (dealerSum > FINAL_NUMBER_21) {
+            handler.postDelayed(this::playerWin, 1000);
+        } else {
+            //dealer must stand, looks nicer with delay
+            handler.postDelayed(this::compareHands, 1000);
+        }
+    }
 
     void compareHands() {
         if (playerSum > dealerSum) {
@@ -290,7 +289,7 @@ public class BlackJackActivity extends AppCompatActivity {
         setActivity();
 
         view.setVisibility(View.VISIBLE);
-        isVisibility = false;
+        isGameRunning = false;
         setViewVisibility();
 
         newGameBtn.setVisibility(View.VISIBLE);
@@ -334,19 +333,19 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void setViewVisibility() {
-        viewVisibilitySet(hitBtn);
-        viewVisibilitySet(standBtn);
-        viewVisibilitySet(surrenderBtn);
-        viewVisibilitySet(betBtn);
-        viewVisibilitySet(moneyBetText);
-        viewVisibilitySet(balance);
-        viewVisibilitySet(setMoney);
-        viewVisibilitySet(playerCards);
-        viewVisibilitySet(dealerCards);
+        toggleGameRunningVisibility(hitBtn);
+        toggleGameRunningVisibility(standBtn);
+        toggleGameRunningVisibility(surrenderBtn);
+        toggleGameRunningVisibility(betBtn);
+        toggleGameRunningVisibility(moneyBetText);
+        toggleGameRunningVisibility(balance);
+        toggleGameRunningVisibility(setMoney);
+        toggleGameRunningVisibility(playerCards);
+        toggleGameRunningVisibility(dealerCards);
     }
 
-    private void viewVisibilitySet(View view) {
-        if (!isVisibility) {
+    private void toggleGameRunningVisibility(View view) {
+        if (!isGameRunning) {
             view.setVisibility(View.INVISIBLE);
         } else {
             view.setVisibility(View.VISIBLE);
