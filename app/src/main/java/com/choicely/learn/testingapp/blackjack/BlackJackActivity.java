@@ -27,7 +27,7 @@ public class BlackJackActivity extends AppCompatActivity {
     private static final int BALANCE_AT_START = 500;
 
     final Handler handler = new Handler();
-    DealersGame dealersGame = new DealersGame();
+    DealersGame dealersGame;
     final List<Integer> dealerCardList = new ArrayList<>();
     private final List<Integer> playerCardList = new ArrayList<>();
 

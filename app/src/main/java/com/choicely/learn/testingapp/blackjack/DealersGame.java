@@ -1,6 +1,8 @@
 package com.choicely.learn.testingapp.blackjack;
 
-class DealersGame extends BlackJackActivity{
+class DealersGame{
+    BlackJackActivity blackJackActivity;
+
     void stand() {
         isButtonsActive = false;
         buttonActivity();
