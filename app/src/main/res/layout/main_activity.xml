@@ -143,6 +143,18 @@
             android:layout_alignTop="@id/main_activity_view_pager"
             android:text="Blackjack" />
 
+        <Button
+            android:id="@+id/main_activity_sulkeiset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:onClick="onClick"
+            android:layout_below="@id/main_activity_black_jack"
+            android:layout_toEndOf="@id/main_activity_notification"
+            android:layout_marginStart="34dp"
+            android:layout_alignTop="@id/main_activity_notification"
+            android:text="Sulkeiset" />
+
     </RelativeLayout>
 
 </ScrollView>

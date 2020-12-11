@@ -26,9 +26,13 @@ public class BlackJackActivity extends AppCompatActivity {
     static final int FINAL_NUMBER_21 = 21;
     private static final int BALANCE_AT_START = 500;
 
-    final Handler handler = new Handler();
-    final List<Integer> dealerCardList = new ArrayList<>();
-    private final List<Integer> playerCardList = new ArrayList<>();
+//    private final List<Integer> playerCardList = new ArrayList<>();
+
+    private final DealerHand.OnHandFinishedListener onHandFinishedListener = this::compareHands;
+
+    private final DealerHand dealerHand = new DealerHand(onHandFinishedListener);
+
+    private final PlayerHand playerHand = new PlayerHand();
 
     private Random random;
     private TextView surrenderText;
@@ -54,7 +58,6 @@ public class BlackJackActivity extends AppCompatActivity {
     boolean isDealerActive;
     boolean isButtonsActive;
     private int playerSum;
-    int dealerSum;
     private int currentBalance;
     private int amountOfMoneyBet;
     private int balanceAndBetDiff;
@@ -96,7 +99,7 @@ public class BlackJackActivity extends AppCompatActivity {
         } else if (v == hitBtn) {
             hit();
         } else if (v == standBtn) {
-            stand();
+            playerStand();
         } else if (v == betBtn) {
             moneyBetting();
 
@@ -124,79 +127,67 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void gameStart() {
-        dealerCardList.clear();
-        playerCardList.clear();
+        dealerHand.clear();
+        playerHand.clear();
         newGameBtn.setVisibility(View.GONE);
 
-        random = new Random();
-        int dealerCard = random.nextInt(10 - 1) + 1;
-        int cardFaceDown = random.nextInt(10 - 1) + 1;
-        int playerCard1 = random.nextInt(10 - 1) + 1;
-        int playerCard2 = random.nextInt(10 - 1) + 1;
-
-        dealerCards.setText(String.format(Locale.getDefault(), "%d\t%s", dealerCard, "?"));
-        playerCards.setText(String.format(Locale.getDefault(), "%d\t%d", playerCard1, playerCard2));
-
         //putting updateListSum here might be an ugly solution
-        dealerCardList.add(dealerCard);
-        updateListSum(dealerCardList);
-        dealerCardList.add(cardFaceDown);
+        dealerHand.addCard();
+        dealerHand.addCard();
 
-        playerCardList.add(playerCard1);
-        playerCardList.add(playerCard2);
+        playerHand.addCard();
+        playerHand.addCard();
 
         isGameRunning = true;
         setViewVisibility();
 
-        updateListSum(playerCardList);
+        updateHandUI();
     }
 
-    void updateListSum(List<Integer> list) {
-        int sum = 0;
-        for (int i : list) {
-            sum += i;
+    void updateHandUI() {
+        {
+            // TODO: from player hand
+            playerCards.setText(String.format(Locale.getDefault(), "%d\t%d", playerHand.getHandString()));
+            playerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", playerHand.getSum()));
         }
-        if (list == playerCardList) {
-            playerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", sum));
-            playerSum = sum;
-        } else {
-            dealerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", sum));
-            dealerSum = sum;
+        {
+            dealerCards.setText(String.format(Locale.getDefault(), "%s", dealerHand.getHandString()));
+            dealerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", dealerHand.getSum()));
         }
     }
 
     private void hit() {
-        addCardTo(playerCardList);
-        updateListSum(playerCardList);
+        playerHand.addCard();
+        updateHandUI();
         playerRules();
     }
 
-    void addCardTo(List<Integer> list) {
-        list.add(random.nextInt(10 - 1) + 1);
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 0; i < list.size(); i++) {
-            String everyCard = list.get(i).toString();
-            builder.append(everyCard + "\t");
-        }
-
-        if (list == playerCardList) {
-            playerCards.setText(builder.toString());
-        } else {
-            dealerCards.setText(builder.toString());
-        }
-    }
+//    void addCardTo(List<Integer> list) {
+//        list.add(random.nextInt(10 - 1) + 1);
+//        StringBuilder builder = new StringBuilder();
+//
+//        for (int i = 0; i < list.size(); i++) {
+//            String everyCard = list.get(i).toString();
+//            builder.append(everyCard + "\t");
+//        }
+//
+//        if (list == playerCardList) {
+//            playerCards.setText(builder.toString());
+//        } else {
+//            dealerCards.setText(builder.toString());
+//        }
+//    }
 
     private void playerRules() {
-        if (playerSum > FINAL_NUMBER_21) {
+        if (playerHand.getSum() > FINAL_NUMBER_21) {
             playerLose();
-        } else if (playerSum == FINAL_NUMBER_21) {
-            stand();
-            updateListSum(playerCardList);
+        } else if (playerHand.getSum() == FINAL_NUMBER_21) {
+            playerStand();
+            updateHandUI();
         }
     }
 
-    private void stand() {
+    private void playerStand() {
         isButtonsActive = false;
         buttonActivity();
 
@@ -204,38 +195,15 @@ public class BlackJackActivity extends AppCompatActivity {
         isDealerActive = true;
         setActivity();
 
-        dealerCardsAtStart();
-        handler.postDelayed(this::dealersGameAccordingToRules, 2000);
-    }
+        dealerCards.setText(dealerHand.getHandString());
 
-    private void dealerCardsAtStart() {
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 0; i < dealerCardList.size(); i++) {
-            String everyCard = dealerCardList.get(i).toString();
-            builder.append(everyCard + "\t");
-        }
-        dealerCards.setText(builder.toString());
-        updateListSum(dealerCardList);
-    }
-
-    private void dealersGameAccordingToRules() {
-        if (dealerSum < 17) {
-            addCardTo(dealerCardList);
-            updateListSum(dealerCardList);
-            handler.postDelayed(this::dealersGameAccordingToRules, 2000);
-        } else if (dealerSum > FINAL_NUMBER_21) {
-            handler.postDelayed(this::playerWin, 1000);
-        } else {
-            //dealer must stand, looks nicer with delay
-            handler.postDelayed(this::compareHands, 1000);
-        }
+        dealerHand.startDealersGame();
     }
 
     void compareHands() {
-        if (playerSum > dealerSum) {
+        if (playerHand.getSum() <= FINAL_NUMBER_21 && (dealerHand.getSum() > FINAL_NUMBER_21 || playerHand.getSum() > dealerHand.getSum())) {
             playerWin();
-        } else if (playerSum == dealerSum) {
+        } else if (playerHand.getSum() == dealerHand.getSum()) {
             gameDraw();
         } else {
             playerLose();

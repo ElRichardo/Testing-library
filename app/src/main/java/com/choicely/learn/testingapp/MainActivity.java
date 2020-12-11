@@ -19,6 +19,7 @@ import com.choicely.learn.testingapp.blackjack.BlackJackActivity;
 import com.choicely.learn.testingapp.countdowntimer.CountDownTimerActivity;
 import com.choicely.learn.testingapp.imagegallery.ImageGalleryActivity;
 import com.choicely.learn.testingapp.receiptsave.ReceiptSavingActivity;
+import com.choicely.learn.testingapp.sulkeiset.SulkeisetActivity;
 import com.choicely.learn.testingapp.threading.RandomStringsActivity;
 import com.choicely.learn.testingapp.viewpager.ViewPagerActivity;
 
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private Button imageGallery;
     private Button citySearch;
     private Button blackJack;
+    private Button sulkeisetBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         randomStrings = findViewById(R.id.main_activity_random_strings);
         citySearch = findViewById(R.id.main_activity_city_search);
         blackJack = findViewById(R.id.main_activity_black_jack);
+        sulkeisetBtn = findViewById(R.id.main_activity_sulkeiset);
 
         createNotificationChannel();
     }
@@ -110,6 +113,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.main_activity_black_jack:
                 intent = new Intent(this, BlackJackActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.main_activity_sulkeiset:
+                intent = new Intent(this, SulkeisetActivity.class);
                 startActivity(intent);
                 break;
         }

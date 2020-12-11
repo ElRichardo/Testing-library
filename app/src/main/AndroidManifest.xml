@@ -86,6 +86,11 @@
             android:parentActivityName=".MainActivity"
             />
 
+        <activity
+            android:name=".sulkeiset.SulkeisetActivity"
+            android:parentActivityName=".MainActivity"
+            />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
