@@ -23,34 +23,6 @@ public class DealerHand extends Hand{
         this.onHandChanged = onHandChanged;
     }
 
-//    public void clear() {
-//        list.clear();
-//    }
-//
-//    int getSum() {
-//        int sum = 0;
-//        for (int i : list) {
-//            sum += i;
-//        }
-//        return sum;
-//    }
-
-//    String getHandString() {
-//        StringBuilder builder = new StringBuilder();
-//
-//        for (int i = 0; i < list.size(); i++) {
-//            String singleCard = list.get(i).toString();
-//            builder.append(singleCard + "\t");
-//        }
-//
-//        return builder.toString();
-//    }
-
-//    public void addCard() {
-//        int card  = random.nextInt(10 - 1) + 1;
-//        list.add(card);
-//    }
-
     private void dealersGameAccordingToRules() {
         int dealerSum = getSum();
         if (dealerSum < 17) {
