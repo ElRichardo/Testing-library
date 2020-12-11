@@ -2,7 +2,6 @@ package com.choicely.learn.testingapp.blackjack;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.choicely.learn.testingapp.R;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -26,15 +23,14 @@ public class BlackJackActivity extends AppCompatActivity {
     static final int FINAL_NUMBER_21 = 21;
     private static final int BALANCE_AT_START = 500;
 
-//    private final List<Integer> playerCardList = new ArrayList<>();
-
     private final DealerHand.OnHandFinishedListener onHandFinishedListener = this::compareHands;
 
-    private final DealerHand dealerHand = new DealerHand(onHandFinishedListener);
+    private final DealerHand.OnHandChanged onHandChanged = this::updateHandUI;
+
+    private final DealerHand dealerHand = new DealerHand(onHandFinishedListener, onHandChanged);
 
     private final PlayerHand playerHand = new PlayerHand();
 
-    private Random random;
     private TextView surrenderText;
     private TextView losingText;
     private TextView winningText;
@@ -57,7 +53,6 @@ public class BlackJackActivity extends AppCompatActivity {
     boolean isPlayerActive;
     boolean isDealerActive;
     boolean isButtonsActive;
-    private int playerSum;
     private int currentBalance;
     private int amountOfMoneyBet;
     private int balanceAndBetDiff;
@@ -101,10 +96,13 @@ public class BlackJackActivity extends AppCompatActivity {
         } else if (v == standBtn) {
             playerStand();
         } else if (v == betBtn) {
-            moneyBetting();
-
-            isButtonsActive = true;
-            buttonActivity();
+            if (setMoney.getText().toString().length() > 0) {
+                moneyBetting();
+                isButtonsActive = true;
+                buttonActivity();
+            } else {
+                Toast.makeText(this, "Set a bet", Toast.LENGTH_SHORT).show();
+            }
         } else if (v == surrenderBtn) {
             surrender();
         }
@@ -131,7 +129,6 @@ public class BlackJackActivity extends AppCompatActivity {
         playerHand.clear();
         newGameBtn.setVisibility(View.GONE);
 
-        //putting updateListSum here might be an ugly solution
         dealerHand.addCard();
         dealerHand.addCard();
 
@@ -146,8 +143,7 @@ public class BlackJackActivity extends AppCompatActivity {
 
     void updateHandUI() {
         {
-            // TODO: from player hand
-            playerCards.setText(String.format(Locale.getDefault(), "%d\t%d", playerHand.getHandString()));
+            playerCards.setText(String.format(Locale.getDefault(), "%s", playerHand.getHandString()));
             playerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", playerHand.getSum()));
         }
         {
@@ -162,28 +158,11 @@ public class BlackJackActivity extends AppCompatActivity {
         playerRules();
     }
 
-//    void addCardTo(List<Integer> list) {
-//        list.add(random.nextInt(10 - 1) + 1);
-//        StringBuilder builder = new StringBuilder();
-//
-//        for (int i = 0; i < list.size(); i++) {
-//            String everyCard = list.get(i).toString();
-//            builder.append(everyCard + "\t");
-//        }
-//
-//        if (list == playerCardList) {
-//            playerCards.setText(builder.toString());
-//        } else {
-//            dealerCards.setText(builder.toString());
-//        }
-//    }
-
     private void playerRules() {
         if (playerHand.getSum() > FINAL_NUMBER_21) {
             playerLose();
         } else if (playerHand.getSum() == FINAL_NUMBER_21) {
             playerStand();
-            updateHandUI();
         }
     }
 
@@ -288,10 +267,10 @@ public class BlackJackActivity extends AppCompatActivity {
             playerTitleText.setTextColor(Color.RED);
             playerSumText.setTextColor(Color.RED);
         } else if (isDealerActive) {
-            playerTitleText.setTextColor(Color.BLACK);
-            playerSumText.setTextColor(Color.BLACK);
             dealerTitleText.setTextColor(Color.RED);
             dealerSumText.setTextColor(Color.RED);
+            playerTitleText.setTextColor(Color.BLACK);
+            playerSumText.setTextColor(Color.BLACK);
         } else {
             playerTitleText.setTextColor(Color.BLACK);
             dealerTitleText.setTextColor(Color.BLACK);

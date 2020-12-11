@@ -1,6 +1,7 @@
 package com.choicely.learn.testingapp.blackjack;
 
 import android.os.Handler;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +9,18 @@ import java.util.Random;
 
 public class DealerHand {
 
+    private static final String TAG = "DealerHand";
     private final Random random = new Random();
     private final Handler handler = new Handler();
 
     private final OnHandFinishedListener onHandFinishedListener;
+    private final OnHandChanged onHandChanged;
 
     final List<Integer> list = new ArrayList<>();
 
-    public DealerHand(OnHandFinishedListener onHandFinishedListener) {
+    public DealerHand(OnHandFinishedListener onHandFinishedListener, OnHandChanged onHandChanged) {
         this.onHandFinishedListener = onHandFinishedListener;
+        this.onHandChanged = onHandChanged;
     }
 
     public void clear() {
@@ -46,6 +50,8 @@ public class DealerHand {
         int dealerSum = getSum();
         if (dealerSum < 17) {
             addCard();
+            onHandChanged.onHandChanged();
+            Log.d(TAG, "add card");
             handler.postDelayed(this::dealersGameAccordingToRules, 2000);
         } else {
             //dealer must stand, looks nicer with delay
@@ -54,7 +60,6 @@ public class DealerHand {
 //             this is where activity method to compare player and dealer hands is needed
         }
     }
-
 
     public void addCard() {
         int card  = random.nextInt(10 - 1) + 1;
@@ -68,7 +73,10 @@ public class DealerHand {
     public interface OnHandFinishedListener {
 
         void onHandFinished();
-
     }
 
+    public interface OnHandChanged{
+
+        void onHandChanged();
+    }
 }
