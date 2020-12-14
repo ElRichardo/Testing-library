@@ -5,7 +5,7 @@ import android.graphics.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LiikenneValot {    //tietää vaan monta valoa on (valoja on viisi näytöllä)
+public class LiikenneValot {
 
     List<Lamppu> list = new ArrayList<>();
 
@@ -55,7 +55,7 @@ public class LiikenneValot {    //tietää vaan monta valoa on (valoja on viisi 
                     list.get(i).setActive(false);
                     list.get(i + 1).setActive(true);
                 }
-                //break so that it would stop going through the list if it finds an active lamp
+                //break so that the loop stops going through the list if it finds an active lamp
                 break;
             }
         }

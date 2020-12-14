@@ -32,18 +32,7 @@ public class SulkeisetActivity extends AppCompatActivity {
 
         liikenneValot.createLights();
 
-        for (Lamppu lamppu : liikenneValot.list) {
-            View view = new View(this);
-            if (lamppu.isActive()) {
-                view.setBackgroundColor(lamppu.getColor());
-            }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);
-            params.gravity = Gravity.CENTER;
-
-            view.setLayoutParams(params);
-            linearLayout.addView(view);
-            list.add(view);
-        }
+        setViews();
 
         linearLayout.setOnClickListener(v -> {
             liikenneValot.updateStatus();
@@ -63,5 +52,20 @@ public class SulkeisetActivity extends AppCompatActivity {
             }
         };
         liikenneValot.setStatusChange(statusChange);
+    }
+
+    private void setViews() {
+        for (Lamppu lamppu : liikenneValot.list) {
+            View view = new View(this);
+            if (lamppu.isActive()) {
+                view.setBackgroundColor(lamppu.getColor());
+            }
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);
+            params.gravity = Gravity.CENTER;
+
+            view.setLayoutParams(params);
+            linearLayout.addView(view);
+            list.add(view);
+        }
     }
 }

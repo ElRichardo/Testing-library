@@ -11,12 +11,9 @@ public class DealerHand extends Hand{
 
     private static final String TAG = "DealerHand";
     private final Handler handler = new Handler();
-    //    private final Random random = new Random();
 
     private final OnHandFinishedListener onHandFinishedListener;
     private final OnHandChanged onHandChanged;
-
-//    final List<Integer> list = new ArrayList<>();
 
     public DealerHand(OnHandFinishedListener onHandFinishedListener, OnHandChanged onHandChanged) {
         this.onHandFinishedListener = onHandFinishedListener;

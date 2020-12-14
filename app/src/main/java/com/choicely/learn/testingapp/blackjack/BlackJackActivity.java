@@ -35,7 +35,7 @@ public class BlackJackActivity extends AppCompatActivity {
     private TextView losingText;
     private TextView winningText;
     private TextView drawText;
-    TextView dealerCards;
+    private TextView dealerCards;
     private TextView playerCards;
     private TextView playerSumText;
     private TextView dealerSumText;
@@ -96,13 +96,7 @@ public class BlackJackActivity extends AppCompatActivity {
         } else if (v == standBtn) {
             playerStand();
         } else if (v == betBtn) {
-            if (setMoney.getText().toString().length() > 0) {
-                moneyBetting();
-                isButtonsActive = true;
-                buttonActivity();
-            } else {
-                Toast.makeText(this, "Set a bet", Toast.LENGTH_SHORT).show();
-            }
+            startMoneyBet();
         } else if (v == surrenderBtn) {
             surrender();
         }
@@ -141,7 +135,7 @@ public class BlackJackActivity extends AppCompatActivity {
         updateHandUI();
     }
 
-    void updateHandUI() {
+    private void updateHandUI() {
         {
             playerCards.setText(String.format(Locale.getDefault(), "%s", playerHand.getHandString()));
             playerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", playerHand.getSum()));
@@ -179,7 +173,7 @@ public class BlackJackActivity extends AppCompatActivity {
         dealerHand.startDealersGame();
     }
 
-    void compareHands() {
+    private void compareHands() {
         if (playerHand.getSum() <= FINAL_NUMBER_21 && (dealerHand.getSum() > FINAL_NUMBER_21 || playerHand.getSum() > dealerHand.getSum())) {
             playerWin();
         } else if (playerHand.getSum() == dealerHand.getSum()) {
@@ -189,10 +183,20 @@ public class BlackJackActivity extends AppCompatActivity {
         }
     }
 
+    private void startMoneyBet() {
+        if (setMoney.getText().toString().length() > 0) {
+            moneyBetting();
+
+            isButtonsActive = true;
+            buttonActivity();
+        } else {
+            Toast.makeText(this, "Set a bet", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void moneyBetting() {
         if (setMoney.getText().toString().length() > 0) {
             amountOfMoneyBet = Integer.parseInt(setMoney.getText().toString());
-            Log.d(TAG, "amount of Money: " + amountOfMoneyBet);
 
             if (currentBalance > amountOfMoneyBet) {
                 balanceAndBetDiff = (currentBalance - amountOfMoneyBet);
@@ -213,12 +217,12 @@ public class BlackJackActivity extends AppCompatActivity {
         gameEnd(surrenderText);
     }
 
-    void gameDraw() {
+    private void gameDraw() {
         setMoney.setText(null);
         gameEnd(drawText);
     }
 
-    void playerWin() {
+    private void playerWin() {
         currentBalance += amountOfMoneyBet;
         setMoney.setText(null);
         gameEnd(winningText);
@@ -242,7 +246,7 @@ public class BlackJackActivity extends AppCompatActivity {
         newGameBtn.setVisibility(View.VISIBLE);
     }
 
-    void buttonActivity() {
+    private void buttonActivity() {
         if (!isButtonsActive) {
             hitBtn.setClickable(false);
             standBtn.setClickable(false);
@@ -262,7 +266,7 @@ public class BlackJackActivity extends AppCompatActivity {
         }
     }
 
-    void setActivity() {
+    private void setActivity() {
         if (isPlayerActive) {
             playerTitleText.setTextColor(Color.RED);
             playerSumText.setTextColor(Color.RED);

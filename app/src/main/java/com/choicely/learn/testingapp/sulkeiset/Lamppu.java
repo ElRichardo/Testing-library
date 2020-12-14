@@ -1,6 +1,6 @@
 package com.choicely.learn.testingapp.sulkeiset;
 
-public class Lamppu {//tämä luokka tietää onko se päällä ja se tietää myös värin
+public class Lamppu {
 
     private int color;
     private boolean isActive;
