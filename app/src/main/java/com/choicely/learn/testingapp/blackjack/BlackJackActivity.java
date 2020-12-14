@@ -21,11 +21,12 @@ public class BlackJackActivity extends AppCompatActivity {
     static final int FINAL_NUMBER_21 = 21;
     private static final int BALANCE_AT_START = 500;
 
-    private final DealerHand.OnHandFinishedListener onHandFinishedListener = this::compareHands;
+    private final DealerHand.OnDealerHandFinishedListener onDealerHandFinishedListener = this::compareHands;
     private final DealerHand.OnHandChanged onHandChanged = this::updateHandUI;
+    private final DealerHand dealerHand = new DealerHand(onDealerHandFinishedListener, onHandChanged);
 
-    private final DealerHand dealerHand = new DealerHand(onHandFinishedListener, onHandChanged);
-    private final PlayerHand playerHand = new PlayerHand();
+    private final PlayerHand.OnDealerHandFinishedListener onHandFinishedListener = this::playerStand;
+    private final PlayerHand playerHand = new PlayerHand(onHandFinishedListener);
 
     private TextView surrenderText;
     private TextView losingText;
@@ -119,10 +120,11 @@ public class BlackJackActivity extends AppCompatActivity {
         playerHand.clear();
         newGameBtn.setVisibility(View.INVISIBLE);
 
-        dealerHand.addCard();
+        dealerHand.addCard(1);
 
-        playerHand.addCard();
-        playerHand.addCard();
+        playerHand.addCard(1);
+        playerHand.addCard(10);
+        playerHand.checkIfBlackJack();
 
         isGameRunning = true;
         setViewVisibility();
@@ -142,7 +144,7 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void hit() {
-        playerHand.addCard();
+        playerHand.addCard(1);
         updateHandUI();
         playerRules();
     }
