@@ -1,5 +1,6 @@
 package com.choicely.learn.testingapp.blackjack;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,11 +26,9 @@ public class BlackJackActivity extends AppCompatActivity {
     private static final int BALANCE_AT_START = 500;
 
     private final DealerHand.OnHandFinishedListener onHandFinishedListener = this::compareHands;
-
     private final DealerHand.OnHandChanged onHandChanged = this::updateHandUI;
 
     private final DealerHand dealerHand = new DealerHand(onHandFinishedListener, onHandChanged);
-
     private final PlayerHand playerHand = new PlayerHand();
 
     private TextView surrenderText;

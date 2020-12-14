@@ -33,62 +33,76 @@
         <activity
             android:name=".ImageRotationTestActivity"
             android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name=".SoundTestActivity"
             android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name=".CardView1Activity"
             android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name=".viewpager.ViewPagerActivity"
             android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name=".AdjustTestActivity"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name=".receiptsave.ReceiptSavingActivity"
             android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name=".receiptsave.CameraActivity"
             android:parentActivityName=".receiptsave.ReceiptSavingActivity"
+            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name=".countdowntimer.CountDownTimerActivity"
             android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name=".threading.RandomStringsActivity"
             android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name=".imagegallery.ImageGalleryActivity"
             android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name=".imagegallery.ShowGalleryPicsActivity"
             android:parentActivityName=".imagegallery.ShowGalleryPicsActivity"
+            android:configChanges="orientation|screenSize"
             />
 
         <activity
             android:name=".CitySearchActivity"
             android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|screenSize"
             />
 
         <activity
             android:name=".blackjack.BlackJackActivity"
             android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|screenSize"
             />
 
         <activity
             android:name=".sulkeiset.SulkeisetActivity"
             android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|screenSize"
             />
 
         <provider

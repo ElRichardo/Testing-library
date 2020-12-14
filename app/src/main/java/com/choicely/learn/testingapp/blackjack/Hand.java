@@ -23,7 +23,7 @@ public class Hand {
 
         for (int i = 0; i < list.size(); i++) {
             String singleCard = list.get(i).toString();
-            everyCard.append(singleCard + "\t");
+            everyCard.append(singleCard + "\t\t");
         }
 
         return everyCard.toString();
