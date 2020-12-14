@@ -3,10 +3,6 @@ package com.choicely.learn.testingapp.blackjack;
 import android.os.Handler;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class DealerHand extends Hand{
 
     private static final String TAG = "DealerHand";
@@ -18,6 +14,25 @@ public class DealerHand extends Hand{
     public DealerHand(OnHandFinishedListener onHandFinishedListener, OnHandChanged onHandChanged) {
         this.onHandFinishedListener = onHandFinishedListener;
         this.onHandChanged = onHandChanged;
+    }
+
+    /**
+     * I'm overriding this method because Dealer has to have the question mark (card face down) in beginning of the game
+     */
+    @Override
+    String getHandString() {
+        StringBuilder everyCard = new StringBuilder();
+
+        for (int i = 0; i < list.size(); i++) {
+            String singleCard = list.get(i).toString();
+            if(list.size() == 1){
+                everyCard.append(singleCard + "\t\t" + "?");
+            } else {
+                everyCard.append(singleCard + "\t\t");
+            }
+        }
+
+        return everyCard.toString();
     }
 
     private void dealersGameAccordingToRules() {

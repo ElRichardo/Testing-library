@@ -1,23 +1,19 @@
 package com.choicely.learn.testingapp.blackjack;
 
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.choicely.learn.testingapp.R;
 
 import java.util.Locale;
-import java.util.Random;
 
 public class BlackJackActivity extends AppCompatActivity {
 
@@ -121,9 +117,8 @@ public class BlackJackActivity extends AppCompatActivity {
     private void gameStart() {
         dealerHand.clear();
         playerHand.clear();
-        newGameBtn.setVisibility(View.GONE);
+        newGameBtn.setVisibility(View.INVISIBLE);
 
-        dealerHand.addCard();
         dealerHand.addCard();
 
         playerHand.addCard();

@@ -7,14 +7,14 @@ import java.util.Random;
 public class Hand {
     private final Random random = new Random();
 
-    private final List<Integer> list = new ArrayList<>();
+    final List<Integer> list = new ArrayList<>();
 
     public void clear() {
         list.clear();
     }
 
     public void addCard() {
-        int card  = random.nextInt(10 - 1) + 1;
+        int card = random.nextInt(10 - 1) + 1;
         list.add(card);
     }
 
@@ -31,7 +31,7 @@ public class Hand {
 
     int getSum() {
         int sum = 0;
-        for(int i: list){
+        for (int i : list) {
             sum += i;
         }
         return sum;
