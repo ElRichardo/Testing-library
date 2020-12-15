@@ -1,12 +1,11 @@
 package com.choicely.learn.testingapp.blackjack;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Hand {
+
     private static final String TAG = "Hand";
     private final Random random = new Random();
 
@@ -17,15 +16,16 @@ public class Hand {
     }
 
     public void addCard(int i) {
-        //int card = random.nextInt(10) + 1;
+        int card = random.nextInt(10) + 1;
         list.add(i);
     }
 
     void checkIfBlackJack() {
-        if (list.get(0) == 1 && list.get(1) == 10 || list.get(0) == 10 && list.get(1) == 1) {
-            list.clear();
-            list.add(21);
-            Log.d(TAG, "Blackjack!!!");
+        if(list.size() == 2) {
+            if (list.get(0) == 1 && list.get(1) == 10 || list.get(0) == 10 && list.get(1) == 1) {
+                list.clear();
+                list.add(21);
+            }
         }
     }
 

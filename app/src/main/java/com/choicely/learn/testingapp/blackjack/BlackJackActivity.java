@@ -2,6 +2,8 @@ package com.choicely.learn.testingapp.blackjack;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,20 +20,17 @@ import java.util.Locale;
 public class BlackJackActivity extends AppCompatActivity {
 
     private static final String TAG = "BlackJackActivity";
-    static final int FINAL_NUMBER_21 = 21;
+    private static final int FINAL_NUMBER_21 = 21;
     private static final int BALANCE_AT_START = 500;
 
-    private final DealerHand.OnDealerHandFinishedListener onDealerHandFinishedListener = this::compareHands;
-    private final DealerHand.OnHandChanged onHandChanged = this::updateHandUI;
-    private final DealerHand dealerHand = new DealerHand(onDealerHandFinishedListener, onHandChanged);
-
-    private final PlayerHand.OnDealerHandFinishedListener onHandFinishedListener = this::playerStand;
-    private final PlayerHand playerHand = new PlayerHand(onHandFinishedListener);
+    private final Handler handler = new Handler();
 
     private TextView surrenderText;
     private TextView losingText;
     private TextView winningText;
     private TextView drawText;
+    private TextView dealerBlackJackText;
+    private TextView playerBlackJackText;
     private TextView dealerCards;
     private TextView playerCards;
     private TextView playerSumText;
@@ -53,6 +52,29 @@ public class BlackJackActivity extends AppCompatActivity {
     private int currentBalance;
     private int amountOfMoneyBet;
     private int balanceAndBetDiff;
+
+    private final DealerHand.OnHandFinishedListener onDealerHandFinishedListener = sum -> {
+        if (sum == 21) {
+            blackJackTextShow(dealerBlackJackText);
+            //delay so that blackjack text has time to be on screen
+            handler.postDelayed(this::compareHands, 2000);
+        } else {
+            //without delay so that it doesn't take too long
+            compareHands();
+        }
+        Log.d(TAG, "compareHands()");
+    };
+    private final DealerHand.OnHandChanged onHandChanged = this::updateHandUI;
+    private final DealerHand dealerHand = new DealerHand(onDealerHandFinishedListener, onHandChanged);
+
+    private final PlayerHand.onPlayerHandFinishedListener onPlayerHandFinishedListener = sum -> {
+        if (sum == 21) {
+            blackJackTextShow(playerBlackJackText);
+        }
+        playerStand();
+        Log.d(TAG, "playerStand()");
+    };
+    private final PlayerHand playerHand = new PlayerHand(onPlayerHandFinishedListener);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +99,8 @@ public class BlackJackActivity extends AppCompatActivity {
         dealerSumText = findViewById(R.id.black_jack_activity_dealer_sum);
         playerTitleText = findViewById(R.id.black_jack_activity_player_text);
         dealerTitleText = findViewById(R.id.black_jack_activity_dealer_text);
+        dealerBlackJackText = findViewById(R.id.black_jack_activity_dealer_bj_text);
+        playerBlackJackText = findViewById(R.id.black_jack_activity_player_bj_text);
 
         setViewVisibility();
 
@@ -122,9 +146,9 @@ public class BlackJackActivity extends AppCompatActivity {
 
         dealerHand.addCard(1);
 
-        playerHand.addCard(1);
         playerHand.addCard(10);
-        playerHand.checkIfBlackJack();
+        playerHand.addCard(1);
+        handler.postDelayed(playerHand::checkIfBlackJack, 1000);
 
         isGameRunning = true;
         setViewVisibility();
@@ -241,6 +265,13 @@ public class BlackJackActivity extends AppCompatActivity {
         setViewVisibility();
 
         newGameBtn.setVisibility(View.VISIBLE);
+    }
+
+    private void blackJackTextShow(TextView textView) {
+        Log.d(TAG, "visible");
+        textView.setVisibility(View.VISIBLE);
+        handler.postDelayed(() -> textView.setVisibility(View.INVISIBLE), 1000);
+        Log.d(TAG, "invisible");
     }
 
     private void buttonActivity() {
