@@ -20,13 +20,11 @@ public class DealerHand extends Hand {
         this.onHandChanged = onHandChanged;
     }
 
-    /**
-     * I'm overriding this method because Dealer has to have the question mark (card face down) in beginning of the game
-     */
     @Override
     String getHandString() {
         StringBuilder everyCard = new StringBuilder();
 
+        //TODO: when the dealer gets blackjack there shouldn't be a question mark
         for (int i = 0; i < list.size(); i++) {
             String singleCard = list.get(i).toString();
             if (list.size() == 1) {
@@ -58,7 +56,7 @@ public class DealerHand extends Hand {
     private void dealersGameAccordingToRules() {
         int dealerSum = getSum();
         if (dealerSum < 17) {
-            addCard(10);
+            addCard(/*10*/);
             onHandChanged.onHandChanged();
             handler.postDelayed(this::checkIfBlackJack, 1000);
 

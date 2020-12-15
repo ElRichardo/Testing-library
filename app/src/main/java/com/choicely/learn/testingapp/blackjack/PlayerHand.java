@@ -1,13 +1,12 @@
 package com.choicely.learn.testingapp.blackjack;
 
-import android.os.Handler;
 import android.util.Log;
 
 public class PlayerHand extends Hand {
 
     private static final String TAG = "PlayerHand";
 
-    private final Handler handler = new Handler();
+//    private final Handler handler = new Handler();
     private final onPlayerHandFinishedListener onPlayerHandFinishedListener;
 
     public PlayerHand(PlayerHand.onPlayerHandFinishedListener onPlayerHandFinishedListener) {

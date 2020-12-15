@@ -46,9 +46,9 @@ public class BlackJackActivity extends AppCompatActivity {
     private Button surrenderBtn;
     private Button betBtn;
     private boolean isGameRunning = false;
-    boolean isPlayerActive;
-    boolean isDealerActive;
-    boolean isButtonsActive;
+    private boolean isPlayerActive;
+    private boolean isDealerActive;
+    private boolean isButtonsActive;
     private int currentBalance;
     private int amountOfMoneyBet;
     private int balanceAndBetDiff;
@@ -144,10 +144,10 @@ public class BlackJackActivity extends AppCompatActivity {
         playerHand.clear();
         newGameBtn.setVisibility(View.INVISIBLE);
 
-        dealerHand.addCard(1);
+        dealerHand.addCard(/*1*/);
 
-        playerHand.addCard(10);
-        playerHand.addCard(1);
+        playerHand.addCard(/*10*/);
+        playerHand.addCard(/*1*/);
         handler.postDelayed(playerHand::checkIfBlackJack, 1000);
 
         isGameRunning = true;
@@ -168,7 +168,7 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void hit() {
-        playerHand.addCard(1);
+        playerHand.addCard(/*1*/);
         updateHandUI();
         playerRules();
     }

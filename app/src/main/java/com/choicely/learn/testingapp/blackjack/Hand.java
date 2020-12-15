@@ -15,9 +15,9 @@ public class Hand {
         list.clear();
     }
 
-    public void addCard(int i) {
+    public void addCard(/*int i*/) {
         int card = random.nextInt(10) + 1;
-        list.add(i);
+        list.add(/*i*/card);
     }
 
     void checkIfBlackJack() {
@@ -34,7 +34,7 @@ public class Hand {
 
         for (int i = 0; i < list.size(); i++) {
             String singleCard = list.get(i).toString();
-            everyCard.append(singleCard + "\t\t");
+            everyCard.append(singleCard).append("\t\t");
         }
 
         return everyCard.toString();
@@ -47,4 +47,5 @@ public class Hand {
         }
         return sum;
     }
+
 }
