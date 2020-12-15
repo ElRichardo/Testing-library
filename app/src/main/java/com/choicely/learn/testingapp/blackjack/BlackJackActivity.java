@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.choicely.learn.testingapp.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Locale;
 
 public class BlackJackActivity extends AppCompatActivity {
@@ -22,8 +24,6 @@ public class BlackJackActivity extends AppCompatActivity {
     private static final String TAG = "BlackJackActivity";
     private static final int FINAL_NUMBER_21 = 21;
     private static final int BALANCE_AT_START = 500;
-
-    private final Handler handler = new Handler();
 
     private TextView surrenderText;
     private TextView losingText;
@@ -53,9 +53,11 @@ public class BlackJackActivity extends AppCompatActivity {
     private int amountOfMoneyBet;
     private int balanceAndBetDiff;
 
+    private final Handler handler = new Handler();
+
     private final DealerHand.OnHandFinishedListener onDealerHandFinishedListener = sum -> {
         if (sum == 21) {
-            blackJackTextShow(dealerBlackJackText);
+            showBlackJackText(dealerBlackJackText);
             //delay so that blackjack text has time to be on screen
             handler.postDelayed(this::compareHands, 2000);
         } else {
@@ -69,7 +71,7 @@ public class BlackJackActivity extends AppCompatActivity {
 
     private final PlayerHand.onPlayerHandFinishedListener onPlayerHandFinishedListener = sum -> {
         if (sum == 21) {
-            blackJackTextShow(playerBlackJackText);
+            showBlackJackText(playerBlackJackText);
         }
         playerStand();
         Log.d(TAG, "playerStand()");
@@ -111,7 +113,7 @@ public class BlackJackActivity extends AppCompatActivity {
     public void onClick(View v) {
         if (v == newGameBtn) {
             newGame();
-            balance.setText(currentBalance + "€");
+            balance.setText(String.format(Locale.getDefault(), "%d€", currentBalance));
         } else if (v == hitBtn) {
             hit();
         } else if (v == standBtn) {
@@ -221,7 +223,7 @@ public class BlackJackActivity extends AppCompatActivity {
 
             if (currentBalance > amountOfMoneyBet) {
                 balanceAndBetDiff = (currentBalance - amountOfMoneyBet);
-                balance.setText(balanceAndBetDiff + "€");
+                balance.setText(String.format(Locale.getDefault(), "%d€", balanceAndBetDiff));
             } else {
                 Toast toast = Toast.makeText(this, "You don't have enough money!", Toast.LENGTH_SHORT);
                 View toastView = toast.getView();
@@ -244,18 +246,18 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void playerWin() {
-        currentBalance += amountOfMoneyBet;
         setMoney.setText(null);
+        currentBalance += amountOfMoneyBet;
         gameEnd(winningText);
     }
 
     private void playerLose() {
-        currentBalance = balanceAndBetDiff;
         setMoney.setText(null);
+        currentBalance = balanceAndBetDiff;
         gameEnd(losingText);
     }
 
-    private void gameEnd(View view) {
+    private void gameEnd(@NotNull View view) {
         isPlayerActive = false;
         isDealerActive = false;
         setActivity();
@@ -267,7 +269,7 @@ public class BlackJackActivity extends AppCompatActivity {
         newGameBtn.setVisibility(View.VISIBLE);
     }
 
-    private void blackJackTextShow(TextView textView) {
+    private void showBlackJackText(@NotNull TextView textView) {
         Log.d(TAG, "visible");
         textView.setVisibility(View.VISIBLE);
         handler.postDelayed(() -> textView.setVisibility(View.INVISIBLE), 1000);

@@ -6,7 +6,6 @@ public class PlayerHand extends Hand {
 
     private static final String TAG = "PlayerHand";
 
-//    private final Handler handler = new Handler();
     private final onPlayerHandFinishedListener onPlayerHandFinishedListener;
 
     public PlayerHand(PlayerHand.onPlayerHandFinishedListener onPlayerHandFinishedListener) {
