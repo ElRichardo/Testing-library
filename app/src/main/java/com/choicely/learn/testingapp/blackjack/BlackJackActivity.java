@@ -49,6 +49,8 @@ public class BlackJackActivity extends AppCompatActivity {
     private boolean isPlayerActive;
     private boolean isDealerActive;
     private boolean isButtonsActive;
+    private boolean isPlayerBlackJack;
+    private boolean isDealerBlackJack;
     private int currentBalance;
     private int amountOfMoneyBet;
     private int balanceAndBetDiff;
@@ -58,6 +60,7 @@ public class BlackJackActivity extends AppCompatActivity {
 
     private final DealerHand.OnHandFinishedListener onDealerHandFinishedListener = sum -> {
         if (sum == 21) {
+            isDealerBlackJack = true;
             showBlackJackText(dealerBlackJackText);
             //delay so that blackjack text has time to be on screen
             handler.postDelayed(this::compareHands, 2000);
@@ -72,6 +75,7 @@ public class BlackJackActivity extends AppCompatActivity {
 
     private final PlayerHand.onPlayerHandFinishedListener onPlayerHandFinishedListener = sum -> {
         if (sum == 21) {
+            isPlayerBlackJack = true;
             showBlackJackText(playerBlackJackText);
         }
         playerStand();
@@ -139,6 +143,9 @@ public class BlackJackActivity extends AppCompatActivity {
         drawText.setVisibility(View.INVISIBLE);
         surrenderText.setVisibility(View.INVISIBLE);
 
+        isPlayerBlackJack = false;
+        isDealerBlackJack = false;
+
         gameStart();
     }
 
@@ -147,10 +154,10 @@ public class BlackJackActivity extends AppCompatActivity {
         playerHand.clear();
         newGameBtn.setVisibility(View.INVISIBLE);
 
-        dealerHand.addCard(/*1*/);
+        dealerHand.addCard();
 
-        playerHand.addCard(/*10*/);
-        playerHand.addCard(/*1*/);
+        playerHand.addCard();
+        playerHand.addCard();
         handler.postDelayed(playerHand::checkIfBlackJack, 1000);
 
         isGameRunning = true;
@@ -171,7 +178,7 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void hit() {
-        playerHand.addCard(/*1*/);
+        playerHand.addCard();
         updateHandUI();
         playerRules();
     }
@@ -198,9 +205,13 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void compareHands() {
-        if (playerHand.getSum() <= FINAL_NUMBER_21 && (dealerHand.getSum() > FINAL_NUMBER_21 || playerHand.getSum() > dealerHand.getSum())) {
+        if (playerHand.getSum() <= FINAL_NUMBER_21 && dealerHand.getSum() > FINAL_NUMBER_21 || playerHand.getSum() > dealerHand.getSum()) {
             playerWin();
-        } else if (playerHand.getSum() == dealerHand.getSum()) {
+        } else if (playerHand.getSum() == dealerHand.getSum() && isPlayerBlackJack && !isDealerBlackJack) {
+            playerWin();
+        } else if (playerHand.getSum() == dealerHand.getSum() && !isPlayerBlackJack && !isDealerBlackJack) {
+            gameDraw();
+        } else if (isPlayerBlackJack && isDealerBlackJack) {
             gameDraw();
         } else {
             playerLose();
