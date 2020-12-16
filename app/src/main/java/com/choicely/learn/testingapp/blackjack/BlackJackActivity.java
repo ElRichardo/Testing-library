@@ -221,9 +221,15 @@ public class BlackJackActivity extends AppCompatActivity {
         if (setMoney.getText().toString().length() > 0) {
             amountOfMoneyBet = Integer.parseInt(setMoney.getText().toString());
 
-            if (currentBalance > amountOfMoneyBet) {
+            if (currentBalance > amountOfMoneyBet && amountOfMoneyBet > 0) {
                 balanceAndBetDiff = (currentBalance - amountOfMoneyBet);
                 balance.setText(String.format(Locale.getDefault(), "%d€", balanceAndBetDiff));
+                Log.d(TAG, "bet");
+            } else if (amountOfMoneyBet < 0) {
+                Toast toast = Toast.makeText(this, "Money can't be negative", Toast.LENGTH_SHORT);
+                View toastView = toast.getView();
+                toastView.setBackgroundResource(R.color.light_blue_A200);
+                toast.show();
             } else {
                 Toast toast = Toast.makeText(this, "You don't have enough money!", Toast.LENGTH_SHORT);
                 View toastView = toast.getView();
