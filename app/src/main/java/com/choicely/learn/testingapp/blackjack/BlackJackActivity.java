@@ -132,6 +132,9 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void newGame() {
+        betBtn.setBackgroundColor(Color.BLACK);
+        betBtn.setClickable(true);
+
         isButtonsActive = false;
         buttonActivity();
 
@@ -172,7 +175,7 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void hit() {
-        playerHand.addCard(1);
+        playerHand.addCard();
         updateHandUI();
         playerRules();
     }
@@ -199,10 +202,10 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void gameStart() {
-        dealerHand.addCard(1);
+        dealerHand.addCard();
 
-        playerHand.addCard(10);
-        playerHand.addCard(1);
+        playerHand.addCard();
+        playerHand.addCard();
         handler.postDelayed(playerHand::checkIfBlackJack, 2000);
 
         updateHandUI();
@@ -230,6 +233,9 @@ public class BlackJackActivity extends AppCompatActivity {
 
                 isButtonsActive = true;
                 buttonActivity();
+
+                betBtn.setBackgroundColor(Color.GRAY);
+                betBtn.setClickable(false);
             } else if (amountOfMoneyBet < 0) {
                 Toast toast = Toast.makeText(this, "Money can't be negative", Toast.LENGTH_SHORT);
                 View toastView = toast.getView();
