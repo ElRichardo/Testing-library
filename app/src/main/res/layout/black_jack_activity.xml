@@ -91,6 +91,7 @@
         android:id="@+id/black_jack_activity_set_money"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/black_jack_activity_surrender"
         android:layout_below="@id/black_jack_activity_stand"
         android:layout_toStartOf="@id/black_jack_activity_bet"
         android:hint="€" />
@@ -100,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/black_jack_activity_stand"
-        android:layout_alignBottom="@id/black_jack_activity_set_money"
+        android:layout_alignBottom="@id/black_jack_activity_surrender"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="4dp"
         android:backgroundTint="@color/black"
