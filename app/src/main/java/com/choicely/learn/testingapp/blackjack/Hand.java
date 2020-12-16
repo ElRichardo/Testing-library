@@ -15,9 +15,9 @@ public class Hand {
         list.clear();
     }
 
-    public void addCard() {
+    public void addCard(int i) {
         int card = random.nextInt(10) + 1;
-        list.add(card);
+        list.add(i);
     }
 
     void checkIfBlackJack() {

@@ -1,10 +1,12 @@
 package com.choicely.learn.testingapp.blackjack;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -68,7 +70,6 @@ public class BlackJackActivity extends AppCompatActivity {
             //without delay so that it doesn't take too long
             compareHands();
         }
-        Log.d(TAG, "compareHands()");
     };
     private final DealerHand.OnHandChanged onHandChanged = this::updateHandUI;
     private final DealerHand dealerHand = new DealerHand(onDealerHandFinishedListener, onHandChanged);
@@ -138,32 +139,25 @@ public class BlackJackActivity extends AppCompatActivity {
         isDealerActive = false;
         setActivity();
 
+        dealerHand.clear();
+        dealerCards.setText(null);
+        dealerSumText.setText(null);
+
+        playerHand.clear();
+        playerCards.setText(null);
+        playerSumText.setText(null);
+
+        isPlayerBlackJack = false;
+        isDealerBlackJack = false;
+
+        newGameBtn.setVisibility(View.INVISIBLE);
         losingText.setVisibility(View.INVISIBLE);
         winningText.setVisibility(View.INVISIBLE);
         drawText.setVisibility(View.INVISIBLE);
         surrenderText.setVisibility(View.INVISIBLE);
 
-        isPlayerBlackJack = false;
-        isDealerBlackJack = false;
-
-        gameStart();
-    }
-
-    private void gameStart() {
-        dealerHand.clear();
-        playerHand.clear();
-        newGameBtn.setVisibility(View.INVISIBLE);
-
-        dealerHand.addCard();
-
-        playerHand.addCard();
-        playerHand.addCard();
-        handler.postDelayed(playerHand::checkIfBlackJack, 1000);
-
         isGameRunning = true;
         setViewVisibility();
-
-        updateHandUI();
     }
 
     private void updateHandUI() {
@@ -178,7 +172,7 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void hit() {
-        playerHand.addCard();
+        playerHand.addCard(1);
         updateHandUI();
         playerRules();
     }
@@ -204,27 +198,20 @@ public class BlackJackActivity extends AppCompatActivity {
         dealerHand.startDealersGame();
     }
 
-    private void compareHands() {
-        if (playerHand.getSum() <= FINAL_NUMBER_21 && dealerHand.getSum() > FINAL_NUMBER_21 || playerHand.getSum() > dealerHand.getSum()) {
-            playerWin();
-        } else if (playerHand.getSum() == dealerHand.getSum() && isPlayerBlackJack && !isDealerBlackJack) {
-            playerWin();
-        } else if (playerHand.getSum() == dealerHand.getSum() && !isPlayerBlackJack && !isDealerBlackJack) {
-            gameDraw();
-        } else if (isPlayerBlackJack && isDealerBlackJack) {
-            gameDraw();
-        } else {
-            playerLose();
-        }
+    private void gameStart() {
+        dealerHand.addCard(1);
+
+        playerHand.addCard(10);
+        playerHand.addCard(1);
+        handler.postDelayed(playerHand::checkIfBlackJack, 2000);
+
+        updateHandUI();
     }
 
     private void startMoneyBet() {
         setMoneyString = setMoney.getText().toString().replaceAll("[^\\d-]", "");//[^\\d-] replace everything except numeric values and minus sign
         if (setMoneyString.length() > 0) {
             moneyBetting();
-
-            isButtonsActive = true;
-            buttonActivity();
         } else {
             Toast.makeText(this, "Set a bet", Toast.LENGTH_SHORT).show();
         }
@@ -233,10 +220,16 @@ public class BlackJackActivity extends AppCompatActivity {
     private void moneyBetting() {
         if (setMoneyString.length() > 0) {
             amountOfMoneyBet = Integer.parseInt(setMoneyString);
-
             if (currentBalance >= amountOfMoneyBet && amountOfMoneyBet > 0) {
                 balanceAndBetDiff = (currentBalance - amountOfMoneyBet);
                 balance.setText(String.format(Locale.getDefault(), "%d€", balanceAndBetDiff));
+
+                gameStart();
+                //looks better with this
+                closeKeyBoard();
+
+                isButtonsActive = true;
+                buttonActivity();
             } else if (amountOfMoneyBet < 0) {
                 Toast toast = Toast.makeText(this, "Money can't be negative", Toast.LENGTH_SHORT);
                 View toastView = toast.getView();
@@ -251,16 +244,32 @@ public class BlackJackActivity extends AppCompatActivity {
         }
     }
 
-    private void surrender() {
-        setMoney.setText(null);
-        int halfOfTheMoney = amountOfMoneyBet / 2;
-        currentBalance -= halfOfTheMoney;
-        gameEnd(surrenderText);
+    /**
+     * so that the keyboard wouldn't be in the way of the cards
+     */
+    private void closeKeyBoard() {
+        View view = this.getCurrentFocus();
+
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
-    private void gameDraw() {
-        setMoney.setText(null);
-        gameEnd(drawText);
+    private void compareHands() {
+        if (playerHand.getSum() <= FINAL_NUMBER_21 && dealerHand.getSum() > FINAL_NUMBER_21) {
+            playerWin();
+        } else if (playerHand.getSum() > dealerHand.getSum() && !isPlayerBlackJack && !isDealerBlackJack) {
+            playerWin();
+        } else if (playerHand.getSum() >= dealerHand.getSum() && isPlayerBlackJack && !isDealerBlackJack) {
+            blackJackPlayerWin();
+        } else if (playerHand.getSum() == dealerHand.getSum() && !isPlayerBlackJack && !isDealerBlackJack) {
+            gameDraw();
+        } else if (isPlayerBlackJack && isDealerBlackJack) {
+            gameDraw();
+        } else {
+            playerLose();
+        }
     }
 
     private void playerWin() {
@@ -269,10 +278,28 @@ public class BlackJackActivity extends AppCompatActivity {
         gameEnd(winningText);
     }
 
+    private void blackJackPlayerWin() {
+        setMoney.setText(null);
+        currentBalance += amountOfMoneyBet * 1.5;
+        gameEnd(winningText);
+    }
+
+    private void gameDraw() {
+        setMoney.setText(null);
+        gameEnd(drawText);
+    }
+
     private void playerLose() {
         setMoney.setText(null);
         currentBalance = balanceAndBetDiff;
         gameEnd(losingText);
+    }
+
+    private void surrender() {
+        setMoney.setText(null);
+        int halfOfTheMoney = amountOfMoneyBet / 2;
+        currentBalance -= halfOfTheMoney;
+        gameEnd(surrenderText);
     }
 
     private void gameEnd(@NotNull View view) {

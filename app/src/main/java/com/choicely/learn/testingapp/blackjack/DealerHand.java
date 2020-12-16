@@ -56,7 +56,7 @@ public class DealerHand extends Hand {
     private void dealersGameAccordingToRules() {
         int dealerSum = getSum();
         if (dealerSum < 17) {
-            addCard();
+            addCard(9);
             onHandChanged.onHandChanged();
             handler.postDelayed(this::checkIfBlackJack, 1000);
 
