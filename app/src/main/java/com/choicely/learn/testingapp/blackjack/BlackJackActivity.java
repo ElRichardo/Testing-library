@@ -219,7 +219,7 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void startMoneyBet() {
-        setMoneyString = setMoney.getText().toString().replaceAll(" ", "").replaceAll("[^\\d.]", "");//[^\\d.] everything but numeric values
+        setMoneyString = setMoney.getText().toString().replaceAll("[^\\d-]", "");//[^\\d-] replace everything except numeric values and minus sign
         if (setMoneyString.length() > 0) {
             moneyBetting();
 
