@@ -1,7 +1,8 @@
 package com.choicely.learn.testingapp.blackjack;
 
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -24,6 +25,7 @@ import java.util.Locale;
 public class BlackJackActivity extends AppCompatActivity {
 
     private static final String TAG = "BlackJackActivity";
+    private static final String RULES_LINK = "https://bicyclecards.com/how-to-play/blackjack/";
     private static final int FINAL_NUMBER_21 = 21;
     private static final int BALANCE_AT_START = 500;
 
@@ -46,6 +48,7 @@ public class BlackJackActivity extends AppCompatActivity {
     private Button hitBtn;
     private Button standBtn;
     private Button surrenderBtn;
+    private Button blackjackRulesBtn;
     private Button betBtn;
     private boolean isGameRunning = false;
     private boolean isPlayerActive;
@@ -95,6 +98,7 @@ public class BlackJackActivity extends AppCompatActivity {
         hitBtn = findViewById(R.id.black_jack_activity_hit);
         standBtn = findViewById(R.id.black_jack_activity_stand);
         surrenderBtn = findViewById(R.id.black_jack_activity_surrender);
+        blackjackRulesBtn = findViewById(R.id.black_jack_activity_rules);
         betBtn = findViewById(R.id.black_jack_activity_bet);
         moneyBetText = findViewById(R.id.black_jack_activity_money_bet_text);
         balance = findViewById(R.id.black_jack_activity_balance);
@@ -128,6 +132,8 @@ public class BlackJackActivity extends AppCompatActivity {
             startMoneyBet();
         } else if (v == surrenderBtn) {
             surrender();
+        } else if(v == blackjackRulesBtn){
+            blackjackRulesLink();
         }
     }
 
@@ -318,6 +324,12 @@ public class BlackJackActivity extends AppCompatActivity {
         setViewVisibility();
 
         newGameBtn.setVisibility(View.VISIBLE);
+    }
+
+    private void blackjackRulesLink() {
+        Uri uri = Uri.parse(RULES_LINK);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 
     private void showBlackJackText(@NotNull TextView textView) {

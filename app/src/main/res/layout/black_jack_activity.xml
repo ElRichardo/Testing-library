@@ -87,6 +87,17 @@
         android:text="Surrender"
         android:textSize="12sp" />
 
+    <Button
+        android:id="@+id/black_jack_activity_rules"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/black_jack_activity_surrender"
+        android:layout_marginStart="4dp"
+        android:backgroundTint="@color/black"
+        android:onClick="onClick"
+        android:text="Rules"
+        android:textSize="12sp" />
+
     <EditText
         android:id="@+id/black_jack_activity_set_money"
         android:layout_width="wrap_content"
