@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +26,7 @@ public class BlackJackActivity extends AppCompatActivity {
     private static final String TAG = "BlackJackActivity";
     private static final String RULES_LINK = "https://bicyclecards.com/how-to-play/blackjack/";
     private static final int FINAL_NUMBER_21 = 21;
-    private static final int BALANCE_AT_START = 500;
+//    private static final int BALANCE_AT_START = 500;
 
     private TextView surrenderText;
     private TextView losingText;
@@ -42,7 +41,7 @@ public class BlackJackActivity extends AppCompatActivity {
     private TextView playerTitleText;
     private TextView dealerTitleText;
     private TextView moneyBetText;
-    private TextView balance;
+    private TextView balanceText;
     private EditText setMoney;
     private Button newGameBtn;
     private Button hitBtn;
@@ -56,10 +55,11 @@ public class BlackJackActivity extends AppCompatActivity {
     private boolean isButtonsActive;
     private boolean isPlayerBlackJack;
     private boolean isDealerBlackJack;
-    private int currentBalance;
-    private int amountOfMoneyBet;
-    private int balanceAndBetDiff;
-    private String setMoneyString;
+
+    //private int currentBalance;
+//    private int amountOfMoneyBet;
+//    private int balanceAndBetDiff;
+//    private String setMoneyString;
 
     private final Handler handler = new Handler();
 
@@ -87,6 +87,10 @@ public class BlackJackActivity extends AppCompatActivity {
     };
     private final PlayerHand playerHand = new PlayerHand(onPlayerHandFinishedListener);
 
+    private Balance balance = new Balance();
+    @Nullable
+    private BetMoney bet;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +105,7 @@ public class BlackJackActivity extends AppCompatActivity {
         blackjackRulesBtn = findViewById(R.id.black_jack_activity_rules);
         betBtn = findViewById(R.id.black_jack_activity_bet);
         moneyBetText = findViewById(R.id.black_jack_activity_money_bet_text);
-        balance = findViewById(R.id.black_jack_activity_balance);
+        balanceText = findViewById(R.id.black_jack_activity_balance);
         setMoney = findViewById(R.id.black_jack_activity_set_money);
         surrenderText = findViewById(R.id.black_jack_activity_surrender_text);
         losingText = findViewById(R.id.black_jack_activity_lost);
@@ -116,23 +120,25 @@ public class BlackJackActivity extends AppCompatActivity {
 
         setViewVisibility();
 
-        currentBalance = BALANCE_AT_START;
+//        currentBalance = BALANCE_AT_START;
+        balanceText.setText(balance.balanceAtStart());
+        Log.d(TAG, "balance at start: " + balance.balanceAtStart());
     }
 
     //switch case is not used because it'll be deprecated in the upcoming android update
     public void onClick(View v) {
         if (v == newGameBtn) {
             newGame();
-            balance.setText(String.format(Locale.getDefault(), "%d€", currentBalance));
+            balanceText.setText(String.format(Locale.getDefault(), "%d€", currentBalance));
         } else if (v == hitBtn) {
             hit();
         } else if (v == standBtn) {
             playerStand();
         } else if (v == betBtn) {
-            startMoneyBet();
+            bet();
         } else if (v == surrenderBtn) {
             surrender();
-        } else if(v == blackjackRulesBtn){
+        } else if (v == blackjackRulesBtn) {
             blackjackRulesLink();
         }
     }
@@ -217,44 +223,59 @@ public class BlackJackActivity extends AppCompatActivity {
         updateHandUI();
     }
 
-    private void startMoneyBet() {
-        setMoneyString = setMoney.getText().toString().replaceAll("[^\\d-]", "");//[^\\d-] replace everything except numeric values and minus sign
-        if (setMoneyString.length() > 0) {
-            moneyBetting();
-        } else {
-            Toast.makeText(this, "Set a bet", Toast.LENGTH_SHORT).show();
-        }
+//    private void startMoneyBet() {
+//        setMoneyString = setMoney.getText().toString().replaceAll("[^\\d-]", "");//[^\\d-] replace everything except numeric values and minus sign
+//        if (setMoneyString.length() > 0) {
+//            moneyBetting();
+//        } else {
+//            Toast.makeText(this, "Set a bet", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+    private void bet() {
+        int moneyBet = Integer.parseInt(setMoney.getText().toString());
+        bet = new BetMoney();
+        bet.setMoneyBet(moneyBet);
+
+        balanceAfterBet(bet);
     }
 
-    private void moneyBetting() {
-        if (setMoneyString.length() > 0) {
-            amountOfMoneyBet = Integer.parseInt(setMoneyString);
-            if (currentBalance >= amountOfMoneyBet && amountOfMoneyBet > 0) {
-                balanceAndBetDiff = (currentBalance - amountOfMoneyBet);
-                balance.setText(String.format(Locale.getDefault(), "%d€", balanceAndBetDiff));
+    private void balanceAfterBet(@NotNull BetMoney bet) {
+        int balanceAfterBet = balance.getBalance() - bet.getMoneyBet();
+        balanceText.setText(balanceAfterBet);
 
-                gameStart();
-                //looks better with this
-                closeKeyBoard();
-
-                isButtonsActive = true;
-                buttonActivity();
-
-                betBtn.setBackgroundColor(Color.GRAY);
-                betBtn.setClickable(false);
-            } else if (amountOfMoneyBet < 0) {
-                Toast toast = Toast.makeText(this, "Money can't be negative", Toast.LENGTH_SHORT);
-                View toastView = toast.getView();
-                toastView.setBackgroundResource(R.color.light_blue_A200);
-                toast.show();
-            } else {
-                Toast toast = Toast.makeText(this, "You don't have enough money!", Toast.LENGTH_SHORT);
-                View toastView = toast.getView();
-                toastView.setBackgroundResource(R.color.light_blue_A200);
-                toast.show();
-            }
-        }
+        balance.setBalance(balanceAfterBet);
     }
+//
+//    private void moneyBetting() {
+//        if (setMoneyString.length() > 0) {
+//            amountOfMoneyBet = Integer.parseInt(setMoneyString);
+//            if (currentBalance >= amountOfMoneyBet && amountOfMoneyBet > 0) {
+//                balanceAndBetDiff = (currentBalance - amountOfMoneyBet);
+//                balance.setText(String.format(Locale.getDefault(), "%d€", balanceAndBetDiff));
+//
+//                gameStart();
+//                //looks better with this
+//                closeKeyBoard();
+//
+//                isButtonsActive = true;
+//                buttonActivity();
+//
+//                betBtn.setBackgroundColor(Color.GRAY);
+//                betBtn.setClickable(false);
+//            } else if (amountOfMoneyBet < 0) {
+//                Toast toast = Toast.makeText(this, "Money can't be negative", Toast.LENGTH_SHORT);
+//                View toastView = toast.getView();
+//                toastView.setBackgroundResource(R.color.light_blue_A200);
+//                toast.show();
+//            } else {
+//                Toast toast = Toast.makeText(this, "You don't have enough money!", Toast.LENGTH_SHORT);
+//                View toastView = toast.getView();
+//                toastView.setBackgroundResource(R.color.light_blue_A200);
+//                toast.show();
+//            }
+//        }
+//    }
 
     /**
      * so that the keyboard wouldn't be in the way of the cards
@@ -286,13 +307,14 @@ public class BlackJackActivity extends AppCompatActivity {
 
     private void playerWin() {
         setMoney.setText(null);
-        currentBalance += amountOfMoneyBet;
+//        currentBalance += amountOfMoneyBet;
+
         gameEnd(winningText);
     }
 
     private void blackJackPlayerWin() {
         setMoney.setText(null);
-        currentBalance += amountOfMoneyBet * 1.5;
+//        currentBalance += amountOfMoneyBet * 1.5;
         gameEnd(winningText);
     }
 
@@ -303,14 +325,14 @@ public class BlackJackActivity extends AppCompatActivity {
 
     private void playerLose() {
         setMoney.setText(null);
-        currentBalance = balanceAndBetDiff;
+//        currentBalance = balanceAndBetDiff;
         gameEnd(losingText);
     }
 
     private void surrender() {
         setMoney.setText(null);
-        int halfOfTheMoney = amountOfMoneyBet / 2;
-        currentBalance -= halfOfTheMoney;
+//        int halfOfTheMoney = amountOfMoneyBet / 2;
+//        currentBalance -= halfOfTheMoney;
         gameEnd(surrenderText);
     }
 
@@ -382,7 +404,7 @@ public class BlackJackActivity extends AppCompatActivity {
         toggleGameRunningVisibility(surrenderBtn);
         toggleGameRunningVisibility(betBtn);
         toggleGameRunningVisibility(moneyBetText);
-        toggleGameRunningVisibility(balance);
+        toggleGameRunningVisibility(balanceText);
         toggleGameRunningVisibility(setMoney);
         toggleGameRunningVisibility(playerCards);
         toggleGameRunningVisibility(dealerCards);
