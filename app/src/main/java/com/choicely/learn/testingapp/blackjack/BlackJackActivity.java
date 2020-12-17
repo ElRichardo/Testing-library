@@ -26,7 +26,6 @@ public class BlackJackActivity extends AppCompatActivity {
     private static final String TAG = "BlackJackActivity";
     private static final String RULES_LINK = "https://bicyclecards.com/how-to-play/blackjack/";
     private static final int FINAL_NUMBER_21 = 21;
-//    private static final int BALANCE_AT_START = 500;
 
     private TextView surrenderText;
     private TextView losingText;
@@ -56,11 +55,6 @@ public class BlackJackActivity extends AppCompatActivity {
     private boolean isPlayerBlackJack;
     private boolean isDealerBlackJack;
 
-    //private int currentBalance;
-//    private int amountOfMoneyBet;
-//    private int balanceAndBetDiff;
-//    private String setMoneyString;
-
     private final Handler handler = new Handler();
 
     private final DealerHand.OnHandFinishedListener onDealerHandFinishedListener = sum -> {
@@ -88,8 +82,13 @@ public class BlackJackActivity extends AppCompatActivity {
     private final PlayerHand playerHand = new PlayerHand(onPlayerHandFinishedListener);
 
     private Balance balance = new Balance();
+
+    //bet instance differs from balance because balance is the same balance every game
+    //unlike bet, which is always set again in the beginning of a game
     @Nullable
     private BetMoney bet;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -232,20 +231,7 @@ public class BlackJackActivity extends AppCompatActivity {
 //        }
 //    }
 
-    private void bet() {
-        int moneyBet = Integer.parseInt(setMoney.getText().toString());
-        bet = new BetMoney();
-        bet.setMoneyBet(moneyBet);
 
-        balanceAfterBet(bet);
-    }
-
-    private void balanceAfterBet(@NotNull BetMoney bet) {
-        int balanceAfterBet = balance.getBalance() - bet.getMoneyBet();
-        balanceText.setText(balanceAfterBet);
-
-        balance.setBalance(balanceAfterBet);
-    }
 //
 //    private void moneyBetting() {
 //        if (setMoneyString.length() > 0) {
@@ -305,34 +291,59 @@ public class BlackJackActivity extends AppCompatActivity {
         }
     }
 
+    private void bet() {
+        int moneyBet = Integer.parseInt(setMoney.getText().toString());
+        bet = new BetMoney();
+        bet.setMoneyBet(moneyBet);
+
+        balanceAfterBet();
+    }
+
+    private void balanceAfterBet() {
+        int balanceAfterBet = balance.getBalance() - bet.getMoneyBet();
+        balanceText.setText(balanceAfterBet);
+
+        balance.setBalance(balanceAfterBet);
+        balanceText.setText(balanceAfterBet);
+    }
+
     private void playerWin() {
         setMoney.setText(null);
-//        currentBalance += amountOfMoneyBet;
 
+        bet.win();
+        balance.setBalance(balance.getBalance() + bet.getMoneyBet());
         gameEnd(winningText);
     }
 
+
     private void blackJackPlayerWin() {
         setMoney.setText(null);
-//        currentBalance += amountOfMoneyBet * 1.5;
+
+        bet.blackJackWin();
+        balance.setBalance(balance.getBalance() + bet.getMoneyBet());
+
         gameEnd(winningText);
     }
 
     private void gameDraw() {
         setMoney.setText(null);
+
+        //returns the bet money to the balance
+        balance.draw(bet.getMoneyBet());
+
         gameEnd(drawText);
     }
 
     private void playerLose() {
         setMoney.setText(null);
-//        currentBalance = balanceAndBetDiff;
+
+        bet.lose();
+
         gameEnd(losingText);
     }
 
     private void surrender() {
         setMoney.setText(null);
-//        int halfOfTheMoney = amountOfMoneyBet / 2;
-//        currentBalance -= halfOfTheMoney;
         gameEnd(surrenderText);
     }
 

@@ -10,6 +10,10 @@ public class Balance {
         return currentBalance;
     }
 
+    void draw(int bet){
+        this.currentBalance += bet;
+    }
+
     void setBalance(int balance){
         this.currentBalance = balance;
     }
