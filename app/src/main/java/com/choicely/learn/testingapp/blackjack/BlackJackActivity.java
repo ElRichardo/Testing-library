@@ -211,28 +211,6 @@ public class BlackJackActivity extends AppCompatActivity {
         dealerHand.startDealersGame();
     }
 
-    private void gameStart() {
-        dealerHand.addCard();
-
-        playerHand.addCard();
-        playerHand.addCard();
-        handler.postDelayed(playerHand::checkIfBlackJack, 2000);
-
-        updateHandUI();
-    }
-
-    /**
-     * so that the keyboard wouldn't be in the way of the cards
-     */
-    private void closeKeyBoard() {
-        View view = this.getCurrentFocus();
-
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
     private void compareHands() {
         if (playerHand.getSum() <= FINAL_NUMBER_21 && dealerHand.getSum() > FINAL_NUMBER_21) {
             playerWin();
@@ -257,28 +235,24 @@ public class BlackJackActivity extends AppCompatActivity {
             bet = new BetMoney();
             bet.setMoneyBet(moneyBet);
 
-            balanceAfterBet();
+            beginGameIfBetIsProper();
         } else {
             Toast.makeText(this, "Set a bet", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void balanceAfterBet() {
+    private void beginGameIfBetIsProper() {
         if (balance.getBalance() >= bet.getMoneyBet() && bet.getMoneyBet() > 0) {
-            int balanceAfterBet = balance.getBalance() - bet.getMoneyBet();
+            betBtn.setBackgroundColor(Color.GRAY);
+            betBtn.setClickable(false);
 
-            balance.setBalance(balanceAfterBet);
-            balanceText.setText(String.format(Locale.getDefault(), "%d€", balanceAfterBet));
-
-            gameStart();
+            setBalanceAfterBet();
             //looks better with this
             closeKeyBoard();
 
+            gameStart();
             isButtonsActive = true;
             buttonActivity();
-
-            betBtn.setBackgroundColor(Color.GRAY);
-            betBtn.setClickable(false);
         } else if (bet.getMoneyBet() < 0) {
             Toast toast = Toast.makeText(this, "Money can't be negative", Toast.LENGTH_SHORT);
             View toastView = toast.getView();
@@ -290,6 +264,23 @@ public class BlackJackActivity extends AppCompatActivity {
             toastView.setBackgroundResource(R.color.light_blue_A200);
             toast.show();
         }
+    }
+
+    private void setBalanceAfterBet() {
+        int balanceAfterBet = balance.getBalance() - bet.getMoneyBet();
+
+        balance.setBalance(balanceAfterBet);
+        balanceText.setText(String.format(Locale.getDefault(), "%d€", balanceAfterBet));
+    }
+
+    private void gameStart() {
+        dealerHand.addCard();
+
+        playerHand.addCard();
+        playerHand.addCard();
+        handler.postDelayed(playerHand::checkIfBlackJack, 2000);
+
+        updateHandUI();
     }
 
     private void playerWin() {
@@ -346,6 +337,18 @@ public class BlackJackActivity extends AppCompatActivity {
         textView.setVisibility(View.VISIBLE);
         handler.postDelayed(() -> textView.setVisibility(View.INVISIBLE), 1000);
         Log.d(TAG, "invisible");
+    }
+
+    /**
+     * so that the keyboard wouldn't be in the way of the cards
+     */
+    private void closeKeyBoard() {
+        View view = this.getCurrentFocus();
+
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     private void buttonActivity() {
