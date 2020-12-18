@@ -20,15 +20,6 @@ public class Hand {
         list.add(card);
     }
 
-    void checkIfBlackJack() {
-        if(list.size() == 2) {
-            if (list.get(0) == 1 && list.get(1) == 10 || list.get(0) == 10 && list.get(1) == 1) {
-                list.clear();
-                list.add(21);
-            }
-        }
-    }
-
     String getHandString() {
         StringBuilder everyCard = new StringBuilder();
 
@@ -40,11 +31,39 @@ public class Hand {
         return everyCard.toString();
     }
 
+    /**
+     * gets the sum when ace(1) is just 1
+     */
     int getSum() {
         int sum = 0;
         for (int i : list) {
             sum += i;
         }
+        if(list.size() == 2 && list.get(0) == 1 && list.get(1) == 10 || list.get(0) == 10 && list.get(1) == 1) {
+            sum = 21;
+        }
+
         return sum;
     }
+
+    /**
+     * gets the sum when ace(1) is 11
+     */
+    int getAltSum() {
+        int sum = 0;
+        boolean hasAce = false;
+        for (int i : list) {
+            if (i == 1) {
+                hasAce = true;
+            }
+            sum += i;
+        }
+
+        if(hasAce && sum+10 <= 21) {
+            sum += 10;
+        }
+
+        return sum;
+    }
+
 }

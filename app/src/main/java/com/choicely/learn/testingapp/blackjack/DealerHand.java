@@ -24,30 +24,21 @@ public class DealerHand extends Hand {
     String getHandString() {
         StringBuilder everyCard = new StringBuilder();
 
-        //TODO: when the dealer gets blackjack there shouldn't be a question mark
         for (int i = 0; i < list.size(); i++) {
             String singleCard = list.get(i).toString();
             if (list.size() == 1) {
                 everyCard.append(singleCard).append("\t\t").append("?");
-            }/* else if(isBlackJack){
-                everyCard.append(singleCard + "\t\t");
-            }*/
-            else {
+            } else {
                 everyCard.append(singleCard).append("\t\t");
             }
         }
-
         return everyCard.toString();
     }
 
-    @Override
     void checkIfBlackJack() {
         if (list.size() == 2) {
             if (list.get(0) == 1 && list.get(1) == 10 || list.get(0) == 10 && list.get(1) == 1) {
                 Log.d(TAG, "Blackjack!!!");
-                list.clear();
-                list.add(21);
-                onHandChanged.onHandChanged();
                 isBlackJack = true;
             }
         }
@@ -56,9 +47,9 @@ public class DealerHand extends Hand {
     private void dealersGameAccordingToRules() {
         int dealerSum = getSum();
         if (dealerSum < 17) {
-            addCard();
+            addCard(10);
+            checkIfBlackJack();
             onHandChanged.onHandChanged();
-            handler.postDelayed(this::checkIfBlackJack, 1000);
 
             handler.postDelayed(this::dealersGameAccordingToRules, 2000);
         } else {

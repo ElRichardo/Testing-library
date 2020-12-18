@@ -78,11 +78,10 @@ public class BlackJackActivity extends AppCompatActivity {
             showBlackJackText(playerBlackJackText);
         }
         playerStand();
-        Log.d(TAG, "playerStand()");
     };
     private final PlayerHand playerHand = new PlayerHand(onPlayerHandFinishedListener);
 
-    private Balance balance = new Balance();
+    private final Balance balance = new Balance();
 
     //bet instance differs from balance because balance is the same balance every game
     //unlike bet, which is always set again in the beginning of a game
@@ -175,11 +174,23 @@ public class BlackJackActivity extends AppCompatActivity {
     private void updateHandUI() {
         {
             playerCards.setText(String.format(Locale.getDefault(), "%s", playerHand.getHandString()));
-            playerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", playerHand.getSum()));
+            int sum = playerHand.getSum();
+            int altSum = playerHand.getAltSum();
+            if (sum == altSum) {
+                playerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", sum));
+            } else {
+                playerSumText.setText(String.format(Locale.getDefault(), "Sum: %d / %d", sum, altSum));
+            }
         }
         {
             dealerCards.setText(String.format(Locale.getDefault(), "%s", dealerHand.getHandString()));
-            dealerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", dealerHand.getSum()));
+            int sum = dealerHand.getSum();
+            int altSum = dealerHand.getAltSum();
+            if (sum == altSum) {
+                dealerSumText.setText(String.format(Locale.getDefault(), "Sum: %d", sum, altSum));
+            } else {
+                dealerSumText.setText(String.format(Locale.getDefault(), "Sum: %d / %d", sum, altSum));
+            }
         }
     }
 
@@ -332,10 +343,8 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void showBlackJackText(@NotNull TextView textView) {
-        Log.d(TAG, "visible");
         textView.setVisibility(View.VISIBLE);
         handler.postDelayed(() -> textView.setVisibility(View.INVISIBLE), 1000);
-        Log.d(TAG, "invisible");
     }
 
     /**
