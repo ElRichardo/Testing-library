@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -87,8 +88,7 @@ public class BlackJackActivity extends AppCompatActivity {
     //unlike bet, which is always set again in the beginning of a game
     @Nullable
     private BetMoney bet;
-
-
+    private String setMoneyString;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,16 +119,13 @@ public class BlackJackActivity extends AppCompatActivity {
 
         setViewVisibility();
 
-//        currentBalance = BALANCE_AT_START;
-        balanceText.setText(balance.balanceAtStart());
-        Log.d(TAG, "balance at start: " + balance.balanceAtStart());
+        balance.balanceAtStart();
     }
 
     //switch case is not used because it'll be deprecated in the upcoming android update
     public void onClick(View v) {
         if (v == newGameBtn) {
             newGame();
-            balanceText.setText(String.format(Locale.getDefault(), "%d€", currentBalance));
         } else if (v == hitBtn) {
             hit();
         } else if (v == standBtn) {
@@ -172,6 +169,8 @@ public class BlackJackActivity extends AppCompatActivity {
 
         isGameRunning = true;
         setViewVisibility();
+
+        balanceText.setText(String.format(Locale.getDefault(), "%d€", balance.getBalance()));
     }
 
     private void updateHandUI() {
@@ -222,47 +221,6 @@ public class BlackJackActivity extends AppCompatActivity {
         updateHandUI();
     }
 
-//    private void startMoneyBet() {
-//        setMoneyString = setMoney.getText().toString().replaceAll("[^\\d-]", "");//[^\\d-] replace everything except numeric values and minus sign
-//        if (setMoneyString.length() > 0) {
-//            moneyBetting();
-//        } else {
-//            Toast.makeText(this, "Set a bet", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
-
-//
-//    private void moneyBetting() {
-//        if (setMoneyString.length() > 0) {
-//            amountOfMoneyBet = Integer.parseInt(setMoneyString);
-//            if (currentBalance >= amountOfMoneyBet && amountOfMoneyBet > 0) {
-//                balanceAndBetDiff = (currentBalance - amountOfMoneyBet);
-//                balance.setText(String.format(Locale.getDefault(), "%d€", balanceAndBetDiff));
-//
-//                gameStart();
-//                //looks better with this
-//                closeKeyBoard();
-//
-//                isButtonsActive = true;
-//                buttonActivity();
-//
-//                betBtn.setBackgroundColor(Color.GRAY);
-//                betBtn.setClickable(false);
-//            } else if (amountOfMoneyBet < 0) {
-//                Toast toast = Toast.makeText(this, "Money can't be negative", Toast.LENGTH_SHORT);
-//                View toastView = toast.getView();
-//                toastView.setBackgroundResource(R.color.light_blue_A200);
-//                toast.show();
-//            } else {
-//                Toast toast = Toast.makeText(this, "You don't have enough money!", Toast.LENGTH_SHORT);
-//                View toastView = toast.getView();
-//                toastView.setBackgroundResource(R.color.light_blue_A200);
-//                toast.show();
-//            }
-//        }
-//    }
-
     /**
      * so that the keyboard wouldn't be in the way of the cards
      */
@@ -292,62 +250,80 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void bet() {
-        int moneyBet = Integer.parseInt(setMoney.getText().toString());
-        bet = new BetMoney();
-        bet.setMoneyBet(moneyBet);
+        //[^\\d-] replace everything except numeric values and minus sign
+        setMoneyString = setMoney.getText().toString().replaceAll("[^\\d-]", "");
+        if (setMoneyString.length() > 0) {
+            int moneyBet = Integer.parseInt(setMoney.getText().toString());
+            bet = new BetMoney();
+            bet.setMoneyBet(moneyBet);
 
-        balanceAfterBet();
+            balanceAfterBet();
+        } else {
+            Toast.makeText(this, "Set a bet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void balanceAfterBet() {
-        int balanceAfterBet = balance.getBalance() - bet.getMoneyBet();
-        balanceText.setText(balanceAfterBet);
+        if (balance.getBalance() >= bet.getMoneyBet() && bet.getMoneyBet() > 0) {
+            int balanceAfterBet = balance.getBalance() - bet.getMoneyBet();
 
-        balance.setBalance(balanceAfterBet);
-        balanceText.setText(balanceAfterBet);
+            balance.setBalance(balanceAfterBet);
+            balanceText.setText(String.format(Locale.getDefault(), "%d€", balanceAfterBet));
+
+            gameStart();
+            //looks better with this
+            closeKeyBoard();
+
+            isButtonsActive = true;
+            buttonActivity();
+
+            betBtn.setBackgroundColor(Color.GRAY);
+            betBtn.setClickable(false);
+        } else if (bet.getMoneyBet() < 0) {
+            Toast toast = Toast.makeText(this, "Money can't be negative", Toast.LENGTH_SHORT);
+            View toastView = toast.getView();
+            toastView.setBackgroundResource(R.color.light_blue_A200);
+            toast.show();
+        } else {
+            Toast toast = Toast.makeText(this, "You don't have enough money!", Toast.LENGTH_SHORT);
+            View toastView = toast.getView();
+            toastView.setBackgroundResource(R.color.light_blue_A200);
+            toast.show();
+        }
     }
 
     private void playerWin() {
-        setMoney.setText(null);
-
         bet.win();
         balance.setBalance(balance.getBalance() + bet.getMoneyBet());
         gameEnd(winningText);
     }
 
-
     private void blackJackPlayerWin() {
-        setMoney.setText(null);
-
         bet.blackJackWin();
         balance.setBalance(balance.getBalance() + bet.getMoneyBet());
-
         gameEnd(winningText);
     }
 
     private void gameDraw() {
-        setMoney.setText(null);
-
         //returns the bet money to the balance
         balance.draw(bet.getMoneyBet());
-
         gameEnd(drawText);
     }
 
     private void playerLose() {
-        setMoney.setText(null);
-
         bet.lose();
-
         gameEnd(losingText);
     }
 
     private void surrender() {
-        setMoney.setText(null);
+        bet.surrender();
+        balance.setBalance(balance.getBalance() + bet.getMoneyBet());
         gameEnd(surrenderText);
     }
 
     private void gameEnd(@NotNull View view) {
+        setMoney.setText(null);
+
         isPlayerActive = false;
         isDealerActive = false;
         setActivity();
