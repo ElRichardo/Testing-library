@@ -88,7 +88,6 @@ public class BlackJackActivity extends AppCompatActivity {
     //unlike bet, which is always set again in the beginning of a game
     @Nullable
     private BetMoney bet;
-    private String setMoneyString;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -228,8 +227,7 @@ public class BlackJackActivity extends AppCompatActivity {
     }
 
     private void bet() {
-        //[^\\d-] replace everything except numeric values and minus sign
-        setMoneyString = setMoney.getText().toString().replaceAll("[^\\d-]", "");
+        String setMoneyString = setMoney.getText().toString().replaceAll("[^\\d-]", ""); //[^\\d-] replace everything except numeric values and minus sign
         if (setMoneyString.length() > 0) {
             int moneyBet = Integer.parseInt(setMoney.getText().toString());
             bet = new BetMoney();
@@ -243,16 +241,17 @@ public class BlackJackActivity extends AppCompatActivity {
 
     private void beginGameIfBetIsProper() {
         if (balance.getBalance() >= bet.getMoneyBet() && bet.getMoneyBet() > 0) {
-            betBtn.setBackgroundColor(Color.GRAY);
-            betBtn.setClickable(false);
-
             setBalanceAfterBet();
             //looks better with this
             closeKeyBoard();
 
-            gameStart();
             isButtonsActive = true;
             buttonActivity();
+
+            betBtn.setBackgroundColor(Color.GRAY);
+            betBtn.setClickable(false);
+
+            gameStart();
         } else if (bet.getMoneyBet() < 0) {
             Toast toast = Toast.makeText(this, "Money can't be negative", Toast.LENGTH_SHORT);
             View toastView = toast.getView();
