@@ -1,13 +1,11 @@
 package com.choicely.learn.testingapp.receiptsave;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -54,11 +52,6 @@ public class CameraActivity extends AppCompatActivity {
         date = findViewById(R.id.camera_activity_date);
         saveButton = findViewById(R.id.camera_activity_save);
 
-        picID = getIntent().getIntExtra(PICTURE_ID, -1);
-
-        updateID();
-        pictureIntent();
-
         saveButton.setOnClickListener(v -> {
             saveReceipt();
 
@@ -67,23 +60,11 @@ public class CameraActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         });
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        picID = getIntent().getIntExtra(PICTURE_ID, -1);
 
-        Log.d(TAG, "resultcode: " + resultCode);
-
-        if (requestCode == IMAGE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                imageView.setImageURI(photoURI);
-            } else { //RESULT_CANCELLED
-                Intent intent = new Intent(this, ReceiptSavingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        }
+        updateID();
+        pictureIntent();
     }
 
     private void updateID() {
@@ -111,7 +92,6 @@ public class CameraActivity extends AppCompatActivity {
         return null;
     }
 
-    //image saving doesn't work. Length of file was 0 for some reason,´.
     private void pictureIntent() {
         String timeStamp = new SimpleDateFormat("HmmssddMMyyyy", Locale.US).format(new Date());
         String fileName = "JPEG_" + timeStamp + "_";
@@ -125,6 +105,23 @@ public class CameraActivity extends AppCompatActivity {
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             takePictureIntent.putExtra(PICTURE_ID, picID);
             startActivityForResult(takePictureIntent, IMAGE_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d(TAG, "resultcode: " + resultCode);
+
+        if (requestCode == IMAGE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                imageView.setImageURI(photoURI);
+            } else { //RESULT_CANCELLED
+                Intent intent = new Intent(this, ReceiptSavingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
         }
     }
 

@@ -12,6 +12,7 @@ import com.choicely.learn.testingapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,11 +21,11 @@ public class RandomStringsActivity extends AppCompatActivity {
 
     private static final String TAG = "RandomStringsActivity";
 
-    private final List list = new ArrayList();
+    private final List<String> list = new ArrayList<>();
     private Button createStrings;
     private TextView countText;
     private long start;
-    private ExecutorService threadPool = Executors.newFixedThreadPool(1);//number says how many threads can be at the same time
+    private final ExecutorService threadPool = Executors.newFixedThreadPool(4);//number says how many threads can be at the same time
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +51,9 @@ public class RandomStringsActivity extends AppCompatActivity {
                     list.add(randomString);
                 }
                 countText.post(() -> {
-                    countText.setText(String.format("Finished! time: %d\nAmount of strings: %d", (System.currentTimeMillis()-start), list.size()));
+                    countText.setText(String.format(Locale.getDefault(),
+                            "Finished! time: %d\nAmount of strings: %d",
+                            (System.currentTimeMillis()-start), list.size()));
                 });
             });
         }

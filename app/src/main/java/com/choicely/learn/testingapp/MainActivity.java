@@ -64,6 +64,22 @@ public class MainActivity extends AppCompatActivity {
         createNotificationChannel();
     }
 
+    /**
+     * Channel needs to be created immediately after the app starts because the notification can't show without a channel
+     */
+    private void createNotificationChannel() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Channel 1", importance);
+            channel.setDescription("This is a channel for my notifications");
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
@@ -122,24 +138,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Channel needs to be created immediately after the app starts because the notification can't show without a channel
-     */
-    private void createNotificationChannel() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Channel 1", importance);
-            channel.setDescription("This is a channel for my notifications");
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
     private void addNotification() {
-
         Intent intent = new Intent(this, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(intent);
