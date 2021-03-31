@@ -8,7 +8,7 @@ import io.realm.RealmConfiguration;
 public class RealmHelper {
 
     private static final String TAG = "RealmHelper";
-    private static final String REALM_NAME = "NotepadApplication.realm";
+    private static final String REALM_NAME = "TestingApplication.realm";
     private static final int REALM_VERSION = RealmHistory.VERSION_1;
 
     private Realm realm;

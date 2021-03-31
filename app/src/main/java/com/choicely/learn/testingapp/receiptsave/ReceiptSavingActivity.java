@@ -48,9 +48,9 @@ public class ReceiptSavingActivity extends AppCompatActivity {
 
 
         cameraButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, CameraActivity.class);
+            Intent intent = new Intent(ReceiptSavingActivity.this, CameraActivity.class);
             intent.putExtra("picID", picID);
-            startActivity(intent);
+            ReceiptSavingActivity.this.startActivity(intent);
         });
 
         //I could also add a textchangelistener which makes the query as soon as the user writes to the field

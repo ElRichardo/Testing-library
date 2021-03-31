@@ -1,7 +1,6 @@
 package com.choicely.learn.testingapp;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -58,7 +57,7 @@ public class CitySearchActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 loadingIndicator.setVisibility(View.VISIBLE);
-                createUrlAndAddCitiesToAdapter();
+                createRequest();
                 parseJson();
                 setAdapter();
                 loadingIndicator.setVisibility(View.INVISIBLE);
@@ -70,7 +69,7 @@ public class CitySearchActivity extends AppCompatActivity {
         });
     }
 
-    private void createUrlAndAddCitiesToAdapter() {
+    private void createRequest() {
         String city = searchBar.getText().toString();
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
